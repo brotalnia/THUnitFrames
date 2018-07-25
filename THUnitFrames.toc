@@ -1,0 +1,13 @@
+## Interface: 11200
+## Title: Tempora Heroica Unit Frames
+## Description: Customized Player, Target, Pet, and Party Frames
+## Author: Seven
+## URL: http://www.tempora-heroica.com/
+## Version: 1.3a16
+## SavedVariablesPerCharacter: THPF_Vars
+## OptionalDeps: MobHealth, MyRolePlay
+THAnimationLib.lua
+THUnitFrames.xml
+THGroupFrames.xml
+THUnitFrames_Config.xml
+THUF_New.xml

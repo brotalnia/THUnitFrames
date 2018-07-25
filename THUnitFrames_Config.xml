@@ -1,0 +1,623 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
+
+  <Script file="THUnitFrames_Config.lua"/>
+
+  <CheckButton name="THUF_RawCBTemplate" virtual="true" inherits="OptionsCheckButtonTemplate">
+   <Layers>
+    <Layer level="ARTWORK">
+     <FontString inherits="GameFontNormalSmall" text="CBText" name="$parent_Title">
+      <Anchors><Anchor point="LEFT" relativeTo="$parent" relativePoint="RIGHT"/></Anchors>
+     </FontString>
+    </Layer>
+   </Layers>
+   <Scripts>
+    <OnClick>
+     if (this:GetChecked()) then
+        PlaySound("igMainMenuOptionCheckBoxOn");
+     else
+        PlaySound("igMainMenuOptionCheckBoxOff");
+     end
+     if (this.flag) then
+        THPF_SetVar(this.flag, this:GetChecked());
+     end
+    </OnClick>
+    <OnShow>
+       if (this.flag) then
+          this:SetChecked( THPF_Vars[this.flag] );
+       end
+    </OnShow>
+   </Scripts>
+  </CheckButton>
+
+  <CheckButton name="THUF_CBDirTemplate" virtual="true" inherits="OptionsCheckButtonTemplate">
+   <HitRectInsets>
+    <AbsInset left="0" right="0" top="0" bottom="0"/>
+   </HitRectInsets>
+   <Layers>
+    <Layer level="ARTWORK">
+     <FontString inherits="GameFontNormalSmall" text="CBText" name="$parent_Title">
+      <Anchors><Anchor point="LEFT" relativeTo="$parent" relativePoint="RIGHT"/></Anchors>
+     </FontString>
+    </Layer>
+   </Layers>
+   <Scripts>
+    <OnClick>
+      if (this:GetChecked()) then
+         PlaySound("igMainMenuOptionCheckBoxOn");
+      else
+         PlaySound("igMainMenuOptionCheckBoxOff");
+      end
+
+      if not this:GetChecked() then
+         this:SetChecked(1);
+      else
+         if (this:GetName() ~= this:GetParent():GetName().."_CBUp") then
+            getglobal(this:GetParent():GetName().."_CBUp"):SetChecked(nil);
+         end
+         if (this:GetName() ~= this:GetParent():GetName().."_CBDown") then
+            getglobal(this:GetParent():GetName().."_CBDown"):SetChecked(nil);
+         end
+         if (this:GetName() ~= this:GetParent():GetName().."_CBLeft") then
+            getglobal(this:GetParent():GetName().."_CBLeft"):SetChecked(nil);
+         end
+         if (this:GetName() ~= this:GetParent():GetName().."_CBRight") then
+            getglobal(this:GetParent():GetName().."_CBRight"):SetChecked(nil);
+         end
+         if (this:GetParent().flag) and (this.varval) then
+            THPF_SetVar(this:GetParent().flag, this.varval);
+         end
+      end
+    </OnClick>
+   </Scripts>
+  </CheckButton>
+
+  <Frame name="THUF_FadeDirTemplate" virtual="true">
+   <Size><AbsDimension x="300" y="32"/></Size>
+   <Layers>
+    <Layer level="ARTWORK">
+     <FontString inherits="GameFontNormalSmall" text="DirTempText" name="$parent_Title">
+      <Anchors><Anchor point="LEFT" relativeTo="$parent" relativePoint="LEFT"/></Anchors>
+     </FontString>
+    </Layer>
+   </Layers>
+   <Frames>
+    <CheckButton name="$parent_CBUp" inherits="THUF_CBDirTemplate">
+     <Anchors>
+      <Anchor point="TOPLEFT"><Offset><AbsDimension x="100" y="0"/></Offset></Anchor>
+     </Anchors>
+     <Scripts>
+      <OnLoad>getglobal(this:GetName().."_Title"):SetText("Up"); this.varval = "up";</OnLoad>
+     </Scripts>
+    </CheckButton>
+    <CheckButton name="$parent_CBDown" inherits="THUF_CBDirTemplate">
+     <Anchors>
+      <Anchor point="TOPLEFT"><Offset><AbsDimension x="180" y="0"/></Offset></Anchor>
+     </Anchors>
+     <Scripts>
+      <OnLoad>getglobal(this:GetName().."_Title"):SetText("Down"); this.varval = "down";</OnLoad>
+     </Scripts>
+    </CheckButton>
+    <CheckButton name="$parent_CBLeft" inherits="THUF_CBDirTemplate">
+     <Anchors>
+      <Anchor point="TOPLEFT"><Offset><AbsDimension x="260" y="0"/></Offset></Anchor>
+     </Anchors>
+     <Scripts>
+      <OnLoad>getglobal(this:GetName().."_Title"):SetText("Left"); this.varval = "left";</OnLoad>
+     </Scripts>
+    </CheckButton>
+    <CheckButton name="$parent_CBRight" inherits="THUF_CBDirTemplate">
+     <Anchors>
+      <Anchor point="TOPLEFT"><Offset><AbsDimension x="340" y="0"/></Offset></Anchor>
+     </Anchors>
+     <Scripts>
+      <OnLoad>getglobal(this:GetName().."_Title"):SetText("Right"); this.varval = "right";</OnLoad>
+     </Scripts>
+    </CheckButton>
+   </Frames>
+  </Frame>
+
+  <CheckButton name="THUF_CBTemplate" virtual="true" inherits="OptionsCheckButtonTemplate">
+   <Layers>
+    <Layer level="ARTWORK">
+     <FontString inherits="GameFontNormalSmall" text="CBText" name="$parent_Title">
+      <Anchors><Anchor point="LEFT" relativeTo="$parent" relativePoint="RIGHT"/></Anchors>
+     </FontString>
+    </Layer>
+   </Layers>
+   <Frames>
+    <Button name="$parent_ResetButton">
+     <Size><AbsDimension x="96" y="32"/></Size>
+     <Anchors><Anchor point="LEFT"><Offset><AbsDimension x="150" y="0"/></Offset></Anchor></Anchors>
+     <NormalTexture inherits="DialogButtonNormalTexture"/>
+     <PushedTexture inherits="DialogButtonPushedTexture"/>
+     <HighlightTexture inherits="DialogButtonHighlightTexture"/>
+     <NormalText inherits="GameFontNormalSmall" text="Reset Position"/>
+     <HighlightText inherits="GameFontNormalSmall" text="Reset Position"/>
+    </Button>
+    <Slider name="$parent_ScaleSlider" inherits="OptionsSliderTemplate">
+     <Anchors>
+      <Anchor point="LEFT" relativeTo="$parent_ResetButton" relativePoint="RIGHT">
+       <Offset><AbsDimension x="5" y="3"/></Offset>
+      </Anchor>
+     </Anchors>
+     <Layers>
+      <Layer level="OVERLAY">
+       <FontString inherits="GameFontNormalSmall" text="1.0" name="$parent_Title">
+        <Anchors>
+         <Anchor point="LEFT" relativeTo="$parent" relativePoint="RIGHT">
+          <Offset><AbsDimension x="5" y="-3"/></Offset>
+         </Anchor>
+        </Anchors>
+       </FontString>
+      </Layer>
+     </Layers>
+     <Scripts>
+      <OnLoad>
+       getglobal(this:GetName().."High"):SetText("2.0");
+       getglobal(this:GetName().."Low"):SetText("0.5");
+       this:SetMinMaxValues(0.5, 2.0);
+       this:SetValueStep(0.01);
+       this:SetValue(1.0);
+       getglobal(this:GetName().."Thumb"):Show();
+      </OnLoad>
+      <OnValueChanged>
+       THUF_ScaleSliderChanged(this, this:GetValue());
+      </OnValueChanged>
+     </Scripts>
+    </Slider>
+   </Frames>
+   <Scripts>
+    <OnClick>
+     if (this:GetChecked()) then
+        PlaySound("igMainMenuOptionCheckBoxOn");
+     else
+        PlaySound("igMainMenuOptionCheckBoxOff");
+     end
+    </OnClick>
+   </Scripts>
+  </CheckButton>
+
+  <Frame name="THUF_ConfigFrame" toplevel="true" frameStrata="DIALOG" parent="UIParent" hidden="true">
+   <Size>
+    <AbsDimension x="455" y="410"/>
+   </Size>
+   <Anchors>
+    <Anchor point="CENTER"/>
+   </Anchors>
+   <Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+    <EdgeSize>
+     <AbsValue val="32"/>
+    </EdgeSize>
+    <TileSize>
+     <AbsValue val="32"/>
+    </TileSize>
+    <BackgroundInsets>
+     <AbsInset left="11" right="12" top="12" bottom="11"/>
+    </BackgroundInsets>
+   </Backdrop>
+
+   <Layers>
+    <Layer level="ARTWORK">
+     <Texture name="$parent_Header" file="Interface\DialogFrame\UI-DialogBox-Header">
+      <Size><AbsDimension x="336" y="64"/></Size>
+      <Anchors><Anchor point="TOP"><Offset><AbsDimension x="0" y="12"/></Offset></Anchor></Anchors>
+     </Texture>
+     <FontString inherits="GameFontNormal" name="$parent_Title" text="THUnitFrames Config">
+      <Anchors>
+       <Anchor point="TOP" relativeTo="$parent_Header">
+        <Offset><AbsDimension x="0" y="-14"/></Offset>
+       </Anchor>
+      </Anchors>
+     </FontString>
+    </Layer>
+   </Layers>
+
+   <Frames>
+    <Button name="$parent_OkayButton">
+     <Size><AbsDimension x="128" y="32"/></Size>
+     <Anchors><Anchor point="BOTTOMRIGHT"><Offset><AbsDimension x="-16" y="16"/></Offset></Anchor></Anchors>
+     <Scripts>
+      <OnClick>THUF_HideConfigWindow();</OnClick>
+     </Scripts>
+     <NormalTexture inherits="DialogButtonNormalTexture"/>
+     <PushedTexture inherits="DialogButtonPushedTexture"/>
+     <HighlightTexture inherits="DialogButtonHighlightTexture"/>
+     <NormalText inherits="DialogButtonNormalText" text="OKAY"/>
+     <HighlightText inherits="DialogButtonHighlightText" text="OKAY"/>
+    </Button>
+
+    <!-- LockCategory -->
+    <Frame name="$parent_LockCategory" inherits="OptionFrameBoxTemplate">
+     <Scripts>
+      <OnLoad>
+       this:SetBackdropBorderColor(0.4, 0.4, 0.4);
+       this:SetBackdropColor(0.15, 0.15, 0.15);
+       getglobal(this:GetName().."Title"):SetText("Locking");
+      </OnLoad>
+     </Scripts>
+     <Size><AbsDimension x="376" y="330"/></Size>
+     <Anchors>
+      <Anchor point="TOPLEFT"><Offset><AbsDimension x="12" y="-35"/></Offset></Anchor>
+      <Anchor point="TOPRIGHT"><Offset><AbsDimension x="-12" y="-35"/></Offset></Anchor>
+     </Anchors>
+     <Frames>
+      <!-- LockCategory frames -->
+      <CheckButton name="$parent_PlayerLock" inherits="THUF_CBTemplate">
+       <Anchors>
+        <Anchor point="TOPLEFT"><Offset><AbsDimension x="15" y="-5"/></Offset></Anchor>
+       </Anchors>
+       <Scripts>
+        <OnLoad>
+         getglobal(this:GetName().."_Title"):SetText("Lock Player Frame");
+         getglobal(this:GetName().."_ResetButton"):SetScript("OnClick", function() THUF_ResetFrame("player"); end);
+         getglobal(this:GetName().."_ScaleSlider"):SetScript("OnValueChanged", function() THUF_ScaleSliderChanged("player"); end);
+        </OnLoad>
+        <OnClick>
+         THUF_LockChange( "unlock_player", this:GetChecked() );
+        </OnClick>
+       </Scripts>
+      </CheckButton>
+      <CheckButton name="$parent_TargetLock" inherits="THUF_CBTemplate">
+       <Anchors>
+        <Anchor point="TOPLEFT" relativeTo="$parent_PlayerLock" relativePoint="BOTTOMLEFT"/>
+       </Anchors>
+       <Scripts>
+        <OnLoad>
+         getglobal(this:GetName().."_Title"):SetText("Lock Target Frame");
+         getglobal(this:GetName().."_ResetButton"):SetScript("OnClick", function() THUF_ResetFrame("target"); end);
+         getglobal(this:GetName().."_ScaleSlider"):SetScript("OnValueChanged", function() THUF_ScaleSliderChanged("target"); end);
+        </OnLoad>
+        <OnClick>
+         THUF_LockChange( "unlock_target", this:GetChecked() );
+        </OnClick>
+       </Scripts>
+      </CheckButton>
+      <CheckButton name="$parent_TotLock" inherits="THUF_CBTemplate">
+       <Anchors>
+        <Anchor point="TOPLEFT" relativeTo="$parent_TargetLock" relativePoint="BOTTOMLEFT"/>
+       </Anchors>
+       <Scripts>
+        <OnLoad>
+         getglobal(this:GetName().."_Title"):SetText("Lock ToT Frame");
+         getglobal(this:GetName().."_ResetButton"):SetScript("OnClick", function() THUF_ResetFrame("tot"); end);
+         getglobal(this:GetName().."_ScaleSlider"):SetScript("OnValueChanged", function() THUF_ScaleSliderChanged("tot"); end);
+        </OnLoad>
+        <OnClick>
+         THUF_LockChange( "unlock_tot", this:GetChecked() );
+        </OnClick>
+       </Scripts>
+      </CheckButton>
+      <CheckButton name="$parent_PetLock" inherits="THUF_CBTemplate">
+       <Anchors>
+        <Anchor point="TOPLEFT" relativeTo="$parent_TotLock" relativePoint="BOTTOMLEFT"/>
+       </Anchors>
+       <Scripts>
+        <OnLoad>
+         getglobal(this:GetName().."_Title"):SetText("Lock Pet Frame");
+         getglobal(this:GetName().."_ResetButton"):SetScript("OnClick", function() THUF_ResetFrame("pet"); end);
+         getglobal(this:GetName().."_ScaleSlider"):SetScript("OnValueChanged", function() THUF_ScaleSliderChanged("pet"); end);
+        </OnLoad>
+        <OnClick>
+         THUF_LockChange( "unlock_pet", this:GetChecked() );
+        </OnClick>
+       </Scripts>
+      </CheckButton>
+      <CheckButton name="$parent_Party0Lock" inherits="THUF_CBTemplate">
+       <Anchors>
+        <Anchor point="TOPLEFT" relativeTo="$parent_PetLock" relativePoint="BOTTOMLEFT"/>
+       </Anchors>
+       <Scripts>
+        <OnLoad>
+         getglobal(this:GetName().."_Title"):SetText("Lock Party 0 Frame");
+         getglobal(this:GetName().."_ResetButton"):SetScript("OnClick", function() THUF_ResetFrame("party0"); end);
+         getglobal(this:GetName().."_ScaleSlider"):SetScript("OnValueChanged", function() THUF_ScaleSliderChanged("party0"); end);
+        </OnLoad>
+        <OnClick>
+         THUF_LockChange( "unlock_party0", this:GetChecked() );
+        </OnClick>
+       </Scripts>
+      </CheckButton>
+      <CheckButton name="$parent_Party1Lock" inherits="THUF_CBTemplate">
+       <Anchors>
+        <Anchor point="TOPLEFT" relativeTo="$parent_Party0Lock" relativePoint="BOTTOMLEFT"/>
+       </Anchors>
+       <Scripts>
+        <OnLoad>
+         getglobal(this:GetName().."_Title"):SetText("Lock Party 1 Frame");
+         getglobal(this:GetName().."_ResetButton"):SetScript("OnClick", function() THUF_ResetFrame("party1"); end);
+         getglobal(this:GetName().."_ScaleSlider"):SetScript("OnValueChanged", function() THUF_ScaleSliderChanged("party1"); end);
+        </OnLoad>
+        <OnClick>
+         THUF_LockChange( "unlock_party1", this:GetChecked() );
+        </OnClick>
+       </Scripts>
+      </CheckButton>
+      <CheckButton name="$parent_Party2Lock" inherits="THUF_CBTemplate">
+       <Anchors>
+        <Anchor point="TOPLEFT" relativeTo="$parent_Party1Lock" relativePoint="BOTTOMLEFT"/>
+       </Anchors>
+       <Scripts>
+        <OnLoad>
+         getglobal(this:GetName().."_Title"):SetText("Lock Party 2 Frame");
+         getglobal(this:GetName().."_ResetButton"):SetScript("OnClick", function() THUF_ResetFrame("party2"); end);
+         getglobal(this:GetName().."_ScaleSlider"):SetScript("OnValueChanged", function() THUF_ScaleSliderChanged("party2"); end);
+        </OnLoad>
+        <OnClick>
+         THUF_LockChange( "unlock_party2", this:GetChecked() );
+        </OnClick>
+       </Scripts>
+      </CheckButton>
+      <CheckButton name="$parent_Party3Lock" inherits="THUF_CBTemplate">
+       <Anchors>
+        <Anchor point="TOPLEFT" relativeTo="$parent_Party2Lock" relativePoint="BOTTOMLEFT"/>
+       </Anchors>
+       <Scripts>
+        <OnLoad>
+         getglobal(this:GetName().."_Title"):SetText("Lock Party 3 Frame");
+         getglobal(this:GetName().."_ResetButton"):SetScript("OnClick", function() THUF_ResetFrame("party3"); end);
+         getglobal(this:GetName().."_ScaleSlider"):SetScript("OnValueChanged", function() THUF_ScaleSliderChanged("party3"); end);
+        </OnLoad>
+        <OnClick>
+         THUF_LockChange( "unlock_party3", this:GetChecked() );
+        </OnClick>
+       </Scripts>
+      </CheckButton>
+      <CheckButton name="$parent_Party4Lock" inherits="THUF_CBTemplate">
+       <Anchors>
+        <Anchor point="TOPLEFT" relativeTo="$parent_Party3Lock" relativePoint="BOTTOMLEFT"/>
+       </Anchors>
+       <Scripts>
+        <OnLoad>
+         getglobal(this:GetName().."_Title"):SetText("Lock Party 4 Frame");
+         getglobal(this:GetName().."_ResetButton"):SetScript("OnClick", function() THUF_ResetFrame("party4"); end);
+         getglobal(this:GetName().."_ScaleSlider"):SetScript("OnValueChanged", function() THUF_ScaleSliderChanged("party4"); end);
+        </OnLoad>
+        <OnClick>
+         THUF_LockChange( "unlock_party4", this:GetChecked() );
+        </OnClick>
+       </Scripts>
+      </CheckButton>
+
+      <CheckButton name="$parent_ForceVisible" inherits="OptionsCheckButtonTemplate">
+       <Anchors>
+        <Anchor point="BOTTOMLEFT"><Offset><AbsDimension x="15" y="5"/></Offset></Anchor>
+       </Anchors>
+       <Layers>
+        <Layer level="ARTWORK">
+         <FontString inherits="GameFontNormalSmall" text="Force all frames to be visible" name="$parent_Title">
+          <Anchors><Anchor point="LEFT" relativeTo="$parent" relativePoint="RIGHT"/></Anchors>
+         </FontString>
+        </Layer>
+       </Layers>
+       <Scripts>
+        <OnClick>
+         THUF_ForceVisibleChange( this:GetChecked() );
+        </OnClick>
+       </Scripts>
+      </CheckButton>
+
+      <Button name="$parent_ResetAllButton">
+       <Size><AbsDimension x="96" y="28"/></Size>
+       <Anchors><Anchor point="BOTTOMRIGHT"><Offset><AbsDimension x="-16" y="8"/></Offset></Anchor></Anchors>
+       <Scripts>
+        <OnClick>this:GetParent():Hide();</OnClick>
+       </Scripts>
+       <NormalTexture inherits="DialogButtonNormalTexture"/>
+       <PushedTexture inherits="DialogButtonPushedTexture"/>
+       <HighlightTexture inherits="DialogButtonHighlightTexture"/>
+       <NormalText inherits="GameFontNormalSmall" text="Reset All"/>
+       <HighlightText inherits="GameFontNormalSmall" text="Reset All"/>
+       <Scripts>
+        <OnClick>
+         THUF_ResetAll();
+        </OnClick>
+       </Scripts>
+      </Button>
+
+      <!-- /LockCategory frames -->
+     </Frames>
+    </Frame>
+    <!-- /LockCategory -->
+
+    <!-- MiscCategory -->
+    <Frame name="$parent_MiscCategory" inherits="OptionFrameBoxTemplate" hidden="true">
+     <Scripts>
+      <OnLoad>
+       this:SetBackdropBorderColor(0.4, 0.4, 0.4);
+       this:SetBackdropColor(0.15, 0.15, 0.15);
+       getglobal(this:GetName().."Title"):SetText("Misc Settings");
+      </OnLoad>
+     </Scripts>
+     <Size><AbsDimension x="376" y="330"/></Size>
+     <Anchors>
+      <Anchor point="TOPLEFT"><Offset><AbsDimension x="12" y="-35"/></Offset></Anchor>
+      <Anchor point="TOPRIGHT"><Offset><AbsDimension x="-12" y="-35"/></Offset></Anchor>
+     </Anchors>
+     <Frames>
+      <!-- MiscCategory frames -->
+
+      <CheckButton name="$parent_ShowPartyFrameInRaid" inherits="THUF_RawCBTemplate">
+       <Anchors>
+        <Anchor point="TOPLEFT"><Offset><AbsDimension x="15" y="-5"/></Offset></Anchor>
+       </Anchors>
+       <Scripts>
+        <OnLoad>
+         getglobal(this:GetName().."_Title"):SetText("Show party frames while in a raid");
+         this.flag = "showpartyframeinraid";
+        </OnLoad>
+       </Scripts>
+      </CheckButton>
+
+      <CheckButton name="$parent_ShowSelfInParty" inherits="THUF_RawCBTemplate">
+       <Anchors>
+        <Anchor point="TOPLEFT" relativeTo="$parent_ShowPartyFrameInRaid" relativePoint="BOTTOMLEFT"/>
+       </Anchors>
+       <Scripts>
+        <OnLoad>
+         getglobal(this:GetName().."_Title"):SetText("Show self in party frames");
+         this.flag = "showselfinparty";
+        </OnLoad>
+       </Scripts>
+      </CheckButton>
+
+      <CheckButton name="$parent_FilterBuffs" inherits="THUF_RawCBTemplate">
+       <Anchors>
+        <Anchor point="TOPLEFT" relativeTo="$parent_ShowSelfInParty" relativePoint="BOTTOMLEFT"/>
+       </Anchors>
+       <Scripts>
+        <OnLoad>
+         getglobal(this:GetName().."_Title"):SetText("Filter party buffs to only those you can cast");
+         this.flag = "filterbuffs";
+        </OnLoad>
+       </Scripts>
+      </CheckButton>
+
+      <CheckButton name="$parent_FilterDebuffs" inherits="THUF_RawCBTemplate">
+       <Anchors>
+        <Anchor point="TOPLEFT" relativeTo="$parent_FilterBuffs" relativePoint="BOTTOMLEFT"/>
+       </Anchors>
+       <Scripts>
+        <OnLoad>
+         getglobal(this:GetName().."_Title"):SetText("Filter party debuffs to only those you can cure");
+         this.flag = "filterdebuffs";
+        </OnLoad>
+       </Scripts>
+      </CheckButton>
+
+      <CheckButton name="$parent_HighlightPartyTarget" inherits="THUF_RawCBTemplate">
+       <Anchors>
+        <Anchor point="TOPLEFT" relativeTo="$parent_FilterDebuffs" relativePoint="BOTTOMLEFT"/>
+       </Anchors>
+       <Scripts>
+        <OnLoad>
+         getglobal(this:GetName().."_Title"):SetText("Highlight party frame of current target");
+         this.flag = "highlightpartytarget";
+        </OnLoad>
+       </Scripts>
+      </CheckButton>
+
+      <Frame name="$parent_PartyFadeDirection" inherits="THUF_FadeDirTemplate">
+       <Anchors>
+        <Anchor point="TOPLEFT" relativeTo="$parent_HighlightPartyTarget" relativePoint="BOTTOMLEFT"/>
+       </Anchors>
+       <Scripts>
+        <OnLoad>
+         getglobal(this:GetName().."_Title"):SetText("Party BG Fade:");
+         this.flag = "partyfadedirection";
+        </OnLoad>
+       </Scripts>
+      </Frame>
+
+      <Frame name="$parent_PlayerFadeDirection" inherits="THUF_FadeDirTemplate">
+       <Anchors>
+        <Anchor point="TOPLEFT" relativeTo="$parent_PartyFadeDirection" relativePoint="BOTTOMLEFT"/>
+       </Anchors>
+       <Scripts>
+        <OnLoad>
+         getglobal(this:GetName().."_Title"):SetText("Player BG Fade:");
+         this.flag = "playerfadedirection";
+        </OnLoad>
+       </Scripts>
+      </Frame>
+
+      <Frame name="$parent_TargetFadeDirection" inherits="THUF_FadeDirTemplate">
+       <Anchors>
+        <Anchor point="TOPLEFT" relativeTo="$parent_PlayerFadeDirection" relativePoint="BOTTOMLEFT"/>
+       </Anchors>
+       <Scripts>
+        <OnLoad>
+         getglobal(this:GetName().."_Title"):SetText("Target BG Fade:");
+         this.flag = "targetfadedirection";
+        </OnLoad>
+       </Scripts>
+      </Frame>
+
+      <Frame name="$parent_TotFadeDirection" inherits="THUF_FadeDirTemplate">
+       <Anchors>
+        <Anchor point="TOPLEFT" relativeTo="$parent_TargetFadeDirection" relativePoint="BOTTOMLEFT"/>
+       </Anchors>
+       <Scripts>
+        <OnLoad>
+         getglobal(this:GetName().."_Title"):SetText("ToT BG Fade:");
+         this.flag = "totfadedirection";
+        </OnLoad>
+       </Scripts>
+      </Frame>
+
+      <Frame name="$parent_PetFadeDirection" inherits="THUF_FadeDirTemplate">
+       <Anchors>
+        <Anchor point="TOPLEFT" relativeTo="$parent_TotFadeDirection" relativePoint="BOTTOMLEFT"/>
+       </Anchors>
+       <Scripts>
+        <OnLoad>
+         getglobal(this:GetName().."_Title"):SetText("Pet BG Fade:");
+         this.flag = "petfadedirection";
+        </OnLoad>
+       </Scripts>
+      </Frame>
+
+      <!-- /MiscCategory frames -->
+     </Frames>
+    </Frame>
+    <!-- /MiscCategory -->
+
+    <Button name="$parentTab1" inherits="CharacterFrameTabButtonTemplate" id="1" text="Lock and Scale">
+     <Anchors><Anchor point="CENTER" relativePoint="BOTTOMLEFT"><Offset><AbsDimension x="70" y="-11"/></Offset></Anchor></Anchors>
+     <Scripts>
+      <OnClick>
+        PanelTemplates_Tab_OnClick(THUF_ConfigFrame);
+        PlaySound("igCharacterInfoTab");
+        THUF_ConfigFrameTab1:SetPoint("CENTER", "THUF_ConfigFrame", "BOTTOMLEFT", 70, -11);
+        THUF_ConfigFrameTab2:SetPoint("LEFT", "THUF_ConfigFrameTab1", "RIGHT", -16, 3);
+        THUF_ConfigFrame_LockCategory:Show();
+        THUF_ConfigFrame_MiscCategory:Hide();
+      </OnClick>
+      <OnEnter>
+        GameTooltip:SetOwner(this, "ANCHOR_RIGHT");
+        GameTooltip:SetText("Locking and Scaling Settings", 1.0, 1.0, 1.0);
+      </OnEnter>
+      <OnLeave>
+        GameTooltip:Hide();
+      </OnLeave>
+     </Scripts>
+    </Button>
+    <Button name="$parentTab2" inherits="CharacterFrameTabButtonTemplate" id="2" text="Misc Settings">
+     <Anchors><Anchor point="LEFT" relativeTo="$parentTab1" relativePoint="RIGHT"><Offset><AbsDimension x="-16" y="3"/></Offset></Anchor></Anchors>
+     <Scripts>
+      <OnClick>
+        PanelTemplates_Tab_OnClick(THUF_ConfigFrame);
+        PlaySound("igCharacterInfoTab");
+        THUF_ConfigFrameTab1:SetPoint("CENTER", "THUF_ConfigFrame", "BOTTOMLEFT", 70, -8);
+        THUF_ConfigFrameTab2:SetPoint("LEFT", "THUF_ConfigFrameTab1", "RIGHT", -16, -3);
+        THUF_ConfigFrame_LockCategory:Hide();
+        THUF_ConfigFrame_MiscCategory:Show();
+      </OnClick>
+      <OnEnter>
+        GameTooltip:SetOwner(this, "ANCHOR_RIGHT");
+        GameTooltip:SetText("Miscellaneous Options", 1.0, 1.0, 1.0);
+      </OnEnter>
+      <OnLeave>
+        GameTooltip:Hide();
+      </OnLeave>
+     </Scripts>
+    </Button>
+
+   </Frames>
+
+   <Scripts>
+    <OnLoad>
+     tinsert(UISpecialFrames, "THUF_ConfigFrame");
+     local v = GetAddOnMetadata("THUnitFrames", "Version");
+     if v then
+        THUF_ConfigFrame_Title:SetText("THUnitFrames v"..v);
+     end
+
+     PanelTemplates_SetNumTabs(THUF_ConfigFrame, 2);
+     PanelTemplates_SetTab(THUF_ConfigFrame, 1);
+    </OnLoad>
+   </Scripts>
+  </Frame>
+</Ui>

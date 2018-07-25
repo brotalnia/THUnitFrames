@@ -1,0 +1,1121 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
+
+  <Script file="THPlayerFrame.lua"/>
+  <Script file="THTargetFrame.lua"/>
+
+  <GameTooltip name="THUF_ScanTooltip" inherits="GameTooltipTemplate">
+   <Scripts>
+    <OnLoad>
+     this:SetOwner(this, "ANCHOR_NONE");
+    </OnLoad>
+   </Scripts>
+  </GameTooltip>
+
+  <Frame name="TFPF_BarInternalTemplate" virtual="true" frameStrata="ARTWORK">
+   <Size><AbsDimension x="213" y="16"/></Size>
+   <Layers>
+    <Layer level="ARTWORK">
+     <Texture name="$parent_BGTexture">
+      <Color r="1.0" g="0.0" b="0.0" a="1"/>
+     </Texture>
+    </Layer>
+    <Layer level="ARTWORK">
+     <FontString name="adsfasdf" inherits="GameFontNormal" text="-x">
+      <Anchors>
+       <Anchor point="TOPLEFT" relativeTo="$parent"/>
+      </Anchors>
+     </FontString>
+    </Layer>
+   </Layers>
+  </Frame>
+
+  <Frame name="THPF_BarTemplate" virtual="true">
+   <Size><AbsDimension x="175" y="24"/></Size>
+   <Layers>
+    <Layer level="BACKGROUND">
+     <Texture name="$parent_BGTexture">
+      <!-- <Size><AbsDimension x="219" y="28"/></Size>
+      <Anchors><Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="TOPLEFT"/></Anchors> -->
+      <Color r="0.5" g="0.5" b="0.5" a="1"/>
+     </Texture>
+    </Layer>
+    <Layer level="ARTWORK">
+    </Layer>
+   </Layers>
+
+   <Frames>
+    <StatusBar name="$parent_SBUnder" hidden="true">
+     <Size><AbsDimension x="171" y="20"/></Size>
+     <Anchors>
+      <Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="TOPLEFT">
+       <Offset><AbsDimension x="2" y="-2"/></Offset>
+      </Anchor>
+     </Anchors>
+     <BarTexture file="Interface\TargetingFrame\UI-StatusBar"/>
+     <BarColor r="1.0" g="0.0" b="0.0"/>
+    </StatusBar>
+
+    <StatusBar name="$parent_SB">
+     <Size><AbsDimension x="171" y="20"/></Size>
+     <Anchors>
+      <Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="TOPLEFT">
+       <Offset><AbsDimension x="2" y="-2"/></Offset>
+      </Anchor>
+     </Anchors>
+     <BarTexture file="Interface\TargetingFrame\UI-StatusBar"/>
+     <BarColor r="1.0" g="0.0" b="0.0"/>
+
+     <Layers>
+      <Layer level="BACKGROUND">
+       <Texture>
+        <Color r="0.1" g="0.1" b="0.1" a="1"/>
+       </Texture>
+      </Layer>
+      <Layer level="OVERLAY">
+       <FontString name="$parent_SBX" inherits="GameFontNormal" text="17500/17500">
+        <Anchors>
+         <Anchor point="CENTER" relativeTo="$parent"/>
+        </Anchors>
+        <Color r="1.0" g="1.0" b="1.0"/>
+       </FontString>
+       <FontString name="$parent_SBP" inherits="GameFontNormalSmall" text="100%">
+        <Anchors>
+         <Anchor point="RIGHT" relativeTo="$parent"/>
+        </Anchors>
+        <Color r="1.0" g="1.0" b="1.0"/>
+       </FontString>
+      </Layer>
+     </Layers>
+
+     <Scripts>
+      <OnLoad>
+       this:SetMinMaxValues(0,100);
+       this:SetValue(100);
+      </OnLoad>
+     </Scripts>
+    </StatusBar>
+   </Frames>
+  </Frame>
+
+  <Button name="THPF_BuffButtonTemplate" hidden="true" virtual="true">
+   <Size><AbsDimension x="22" y="22"/></Size>
+   <Layers>
+    <Layer level="ARTWORK">
+     <Texture name="$parent_Icon" setAllPoints="true"/>
+    </Layer>
+   </Layers>
+   <Scripts>
+    <OnEnter>
+     GameTooltip:SetOwner(this, "ANCHOR_BOTTOMRIGHT", 15, -25);
+     GameTooltip:SetUnitBuff(this.unit, this.id);
+    </OnEnter>
+    <OnLeave>
+     GameTooltip:Hide();
+    </OnLeave>
+   </Scripts>
+  </Button>
+
+  <Button name="THPF_DebuffButtonTemplate" inherits="THPF_BuffButtonTemplate" virtual="true">
+   <Layers>
+    <Layer level="OVERLAY">
+     <Texture name="$parent_Border" file="Interface\Buttons\UI-Debuff-Border">
+     </Texture>
+     <FontString name="$parent_Count" inherits="NumberFontNormalSmall">
+      <Anchors><Anchor point="BOTTOMRIGHT"><Offset><AbsDimension x="-1" y="0"/></Offset></Anchor></Anchors>
+     </FontString>
+    </Layer>
+   </Layers>
+   <Scripts>
+    <OnEnter>
+     GameTooltip:SetOwner(this, "ANCHOR_BOTTOMRIGHT", 15, -25);
+     GameTooltip:SetUnitDebuff(this.unit, this.id);
+    </OnEnter>
+    <OnLeave>
+     GameTooltip:Hide();
+    </OnLeave>
+   </Scripts>
+  </Button>
+
+  <Button name="THPF_ToTBuffButtonTemplate" inherits="THPF_BuffButtonTemplate" virtual="true">
+   <Scripts><OnLoad>this.unit = "targettarget";</OnLoad></Scripts>
+  </Button>
+
+  <Button name="THPF_ToTDebuffButtonTemplate" inherits="THPF_DebuffButtonTemplate" virtual="true">
+   <Scripts><OnLoad>this.unit = "targettarget";</OnLoad></Scripts>
+  </Button>
+
+  <Button name="THPF_TargetBuffButtonTemplate" inherits="THPF_BuffButtonTemplate" virtual="true">
+   <Scripts><OnLoad>this.unit = "target";</OnLoad></Scripts>
+  </Button>
+
+  <Button name="THPF_TargetDebuffButtonTemplate" inherits="THPF_DebuffButtonTemplate" virtual="true">
+   <Scripts><OnLoad>this.unit = "target";</OnLoad></Scripts>
+  </Button>
+
+  <Button name="THPF_PetBuffButtonTemplate" inherits="THPF_BuffButtonTemplate" virtual="true">
+   <Scripts><OnLoad>this.unit = "pet";</OnLoad></Scripts>
+  </Button>
+
+  <Button name="THPF_PetDebuffButtonTemplate" inherits="THPF_DebuffButtonTemplate" virtual="true">
+   <Scripts><OnLoad>this.unit = "pet";</OnLoad></Scripts>
+  </Button>
+
+  <Frame name="THPF_PetBarTemplate" virtual="true">
+   <Layers>
+    <Layer level="BACKGROUND">
+     <Texture name="$parent_BGTexture">
+      <Color r="1.0" g="1.0" b="1.0"/>
+     </Texture>
+    </Layer>
+   </Layers>
+   <Frames>
+    <StatusBar name="$parent_SB">
+     <Anchors>
+      <Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="TOPLEFT">
+       <Offset><AbsDimension x="1" y="-1"/></Offset>
+      </Anchor>
+      <Anchor point="BOTTOMRIGHT" relativeTo="$parent" relativePoint="BOTTOMRIGHT">
+       <Offset><AbsDimension x="-1" y="1"/></Offset>
+      </Anchor>
+     </Anchors>
+     <BarTexture file="Interface\TargetingFrame\UI-StatusBar"/>
+     <BarColor r="1.0" g="0.0" b="0.0"/>
+     <Layers>
+      <Layer level="BACKGROUND">
+       <Texture name="$parent_BGTexture">
+        <Color r="0.1" g="0.1" b="0.1" a="1.0"/>
+       </Texture>
+      </Layer>
+      <Layer level="OVERLAY">
+       <FontString name="$parent_Text" inherits="GameFontNormalSmall" text="x/x">
+        <Anchors><Anchor point="CENTER"/></Anchors>
+        <Color r="1.0" g="1.0" b="1.0"/>
+       </FontString>
+      </Layer>
+     </Layers>
+    </StatusBar> 
+   </Frames>
+  </Frame>
+
+  <Button name="THPF_UnitFrame" virtual="true">
+   <Size>
+    <AbsDimension x="265" y="86"/>
+   </Size>
+
+   <Layers>
+    <Layer level="BACKGROUND">
+     <Texture name="$parent_GradientBG">
+      <Size>
+       <AbsDimension x="265" y="86"/>
+      </Size>
+      <Anchors>
+       <Anchor point="TOPLEFT"/>
+      </Anchors>
+      <Color r="0" g="0" b="0" a="1"/>
+     </Texture>
+    </Layer>
+    <Layer level="ARTWORK">
+     <FontString name="$parent_PlayerName" inherits="GameFontNormalSmall" text="-x">
+      <Anchors>
+       <Anchor point="TOPRIGHT" relativeTo="$parent">
+        <Offset><AbsDimension x="-6" y="-2"/></Offset>
+       </Anchor>
+      </Anchors>
+     </FontString>
+     <FontString name="$parent_PlayerDesc" inherits="GameFontNormalSmall" text="-x">
+      <Anchors>
+       <Anchor point="TOPRIGHT" relativeTo="$parent_PlayerName" relativePoint="BOTTOMRIGHT"/>
+       <!-- <Anchor point="TOPRIGHT" relativeTo="$parent">
+        <Offset><AbsDimension x="-6" y="-12"/></Offset>
+       </Anchor> -->
+      </Anchors>
+     </FontString>
+     <Texture name="$parent_LeaderIcon" file="Interface\GroupFrame\UI-Group-LeaderIcon" hidden="true">
+      <Size><AbsDimension x="16" y="16"/></Size>
+      <Anchors>
+       <Anchor point="RIGHT" relativeTo="$parent_PlayerName" relativePoint="LEFT"/>
+      </Anchors>
+     </Texture>
+<!--
+     <Texture name="$parent_PVPIcon" file="Interface\TargetingFrame\UI-PVP-Horde">
+      <Size><AbsDimension x="32" y="32"/></Size>
+      <Anchors>
+       <Anchor point="TOPLEFT" relativeTo="$parent_MPBar" relativePoint="BOTTOMLEFT">
+        <Offset><AbsDimension x="0" y="-2"/></Offset>
+       </Anchor>
+      </Anchors>
+     </Texture>
+-->
+    </Layer>
+   </Layers>
+
+   <Frames>
+    <PlayerModel name="$parent_PlayerModel">
+     <Size><AbsDimension x="69" y="73"/></Size>
+     <Anchors>
+      <Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="$parent">
+       <Offset><AbsDimension x="8" y="-4"/></Offset>
+      </Anchor>
+     </Anchors>
+     <Layers>
+      <Layer level="BACKGROUND">
+       <Texture name="$parent_PHIBG">
+        <Size><AbsDimension x="69" y="73"/></Size>
+        <Anchors><Anchor point="TOPLEFT"><Offset><AbsDimension x="-1" y="1"/></Offset></Anchor></Anchors>
+        <Color r="1.0" g="1.0" b="1.0" a="1.0"/>
+       </Texture>
+      </Layer>
+      <Layer level="OVERLAY">
+      <FontString name="$parent_PHI" hidden="true" inherits="NumberFontNormalHuge">
+       <Anchors>
+        <Anchor point="CENTER" relativeTo="$parent_PlayerModel" relativePoint="CENTER">
+        </Anchor>
+       </Anchors>
+      </FontString>
+      </Layer>
+     </Layers>
+     <Scripts>
+      <OnLoad>
+       Model_OnLoad();
+       this:RegisterEvent("DISPLAY_SIZE_CHANGED");
+      </OnLoad>
+      <OnEvent>
+       this:RefreshUnit();
+      </OnEvent>
+      <OnUpdate>
+       -- Model_OnUpdate(arg1, this);
+       this:SetCamera(0);
+      </OnUpdate>
+      <OnShow>
+      </OnShow>
+     </Scripts>
+    </PlayerModel>
+
+    <Frame name="$parent_RaidTargetIcon" hidden="true">
+     <Size><AbsDimension x="30" y="30"/></Size>
+     <Anchors>
+      <Anchor point="BOTTOMLEFT" relativeTo="$parent_PlayerModel" relativePoint="BOTTOMLEFT">
+      </Anchor>
+     </Anchors>
+     <Layers>
+      <Layer level="OVERLAY">
+       <Texture name="$parent_Texture" file="Interface\TargetingFrame\UI-RaidTargetingIcons"></Texture>
+      </Layer>
+     </Layers>
+    </Frame>
+
+    <Button name="$parent_RoleplayIcon" hidden="true">
+     <Size><AbsDimension x="30" y="30"/></Size>
+     <Anchors>
+      <Anchor point="TOPRIGHT" relativeTo="$parent_PlayerModel" relativePoint="TOPRIGHT">
+      </Anchor>
+     </Anchors>
+     <Layers>
+      <Layer level="OVERLAY">
+       <Texture name="$parent_Texture" file="Interface\AddOns\THUnitFrames\Images\ButtonToolTip.tga"></Texture>
+      </Layer>
+     </Layers>
+     <Scripts>
+      <OnClick>THTF_RoleplayIconClicked();</OnClick>
+     </Scripts>
+    </Button>
+
+    <Frame name="$parent_HPBar" inherits="THPF_BarTemplate">
+     <Anchors>
+      <Anchor point="TOPLEFT" relativeTo="$parent_PlayerModel" relativePoint="TOPRIGHT">
+       <Offset>
+        <AbsDimension x="5" y="-23"/>
+       </Offset>
+      </Anchor>
+     </Anchors>
+    </Frame>
+
+    <Frame name="$parent_MPBar" inherits="THPF_BarTemplate">
+     <Anchors>
+      <Anchor point="TOPLEFT" relativeTo="$parent_HPBar" relativePoint="BOTTOMLEFT">
+       <Offset>
+        <AbsDimension x="0" y="-3"/>
+       </Offset>
+      </Anchor>
+     </Anchors>
+    </Frame>
+
+    <Frame name="$parent_State" hidden="true">
+     <Size><AbsDimension x="36" y="36"/></Size>
+     <Anchors>
+      <Anchor point="TOPLEFT" relativeTo="$parent_PlayerModel" relativePoint="TOPRIGHT">
+       <Offset><AbsDimension x="1" y="7"/></Offset>
+      </Anchor>
+     </Anchors>
+     <Layers>
+      <Layer level="OVERLAY">
+       <Texture name="$parent_StateIcon" file="Interface\CharacterFrame\UI-StateIcon" hidden="true">
+        <TexCoords left="0" right="0.5" top="0" bottom="0.5"/>
+       </Texture>
+      </Layer>
+     </Layers>
+    </Frame>
+    <Frame name="$parent_Faction" hidden="true">
+     <Size><AbsDimension x="36" y="36"/></Size>
+     <Anchors>
+      <Anchor point="LEFT" relativeTo="$parent_PlayerDesc" relativePoint="RIGHT">
+       <Offset><AbsDimension x="0" y="-4"/></Offset>
+      </Anchor>
+     </Anchors>
+     <Layers>
+      <Layer level="OVERLAY">
+       <Texture name="$parent_PVPIcon" file="Interface\TargetingFrame\UI-PVP-Horde"/>
+      </Layer>
+     </Layers>
+    </Frame>
+   </Frames>
+  </Button>
+
+  <Button name="THPF_MainFrame" inherits="THPF_UnitFrame" frameStrata="BACKGROUND" toplevel="true" movable="true" parent="UIParent">
+   <Anchors>
+    <Anchor point="TOPLEFT">
+     <Offset>
+      <AbsDimension x="5" y="1"/>
+     </Offset>
+    </Anchor>
+   </Anchors>
+   <Frames>
+
+    <Frame name="$parent_ExpBar" inherits="THPF_BarTemplate" hidden="true">
+     <Anchors>
+      <Anchor point="TOPLEFT" relativeTo="$parent_MPBar" relativePoint="BOTTOMLEFT">
+       <Offset>
+        <AbsDimension x="0" y="-3"/>
+       </Offset>
+      </Anchor>
+     </Anchors>
+     <Scripts>
+      <OnEnter>
+       THPF_ExpBarUpdate();
+      </OnEnter>
+      <OnLeave>
+       THPF_ExpBarUpdate();
+      </OnLeave>
+     </Scripts>
+    </Frame>
+
+   </Frames>
+   <Scripts>
+    <OnLoad>
+     THPF_OnLoad();
+    </OnLoad>
+    <OnEvent>
+     THPF_OnEvent(event);
+    </OnEvent>
+    <OnUpdate>
+     THPF_OnUpdate(arg1);
+    </OnUpdate>
+    <OnClick>
+     THPF_OnClick(arg1);
+    </OnClick>
+    <OnMouseUp>
+     THPF_MouseUpHandler("up");
+    </OnMouseUp>
+    <OnMouseDown>
+     THPF_MouseDownHandler("up");
+    </OnMouseDown>
+   </Scripts>
+  </Button>
+
+  <!-- Pet -->
+    <Button name="THPF_MainFrame_Pet" frameStrata="BACKGROUND" toplevel="true" movable="true" parent="UIParent" hidden="true">
+     <Size><AbsDimension x="175" y="60"/></Size>
+     <Anchors>
+      <Anchor point="TOPLEFT" relativeTo="THPF_MainFrame_MPBar" relativePoint="BOTTOMLEFT"/>
+      <Anchor point="TOPRIGHT" relativeTo="THPF_MainFrame_MPBar" relativePoint="BOTTOMRIGHT"/>
+     </Anchors>
+     <Layers>
+      <Layer level="BACKGROUND">
+       <Texture name="$parent_BGTexture">
+        <Color r="1.0" g="1.0" b="1.0"/>
+       </Texture>
+      </Layer>
+      <Layer level="ARTWORK">
+       <FontString name="$parent_Level" inherits="GameFontNormalSmall" text="10">
+        <Anchors>
+         <Anchor point="TOPRIGHT" relativeTo="$parent" relativePoint="TOPRIGHT">
+          <Offset><AbsDimension x="-5" y="-5"/></Offset>
+         </Anchor>
+        </Anchors>
+        <Color r="1.0" g="1.0" b="1.0"/>
+       </FontString>
+       <FontString name="$parent_Name" inherits="GameFontNormalSmall" text="Testtest">
+        <Anchors>
+         <Anchor point="TOPRIGHT" relativeTo="$parent_Level" relativePoint="TOPLEFT"/>
+        </Anchors>
+       </FontString>
+      </Layer>
+     </Layers>
+     <Frames> 
+
+      <PlayerModel name="$parent_PlayerModel">
+       <Size><AbsDimension x="50" y="50"/></Size>
+       <Anchors>
+        <Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="TOPLEFT">
+         <Offset><AbsDimension x="5" y="-5"/></Offset>
+        </Anchor>
+       </Anchors>
+       <Layers>
+        <Layer level="BACKGROUND">
+         <Texture name="$parent_BGTexture">
+          <Color r="0.0" g="0.0" b="0.0"/>
+         </Texture>
+        </Layer>
+       </Layers>
+       <Scripts>
+        <OnLoad>
+         Model_OnLoad();
+         this:RegisterEvent("DISPLAY_SIZE_CHANGED");
+        </OnLoad>
+        <OnEvent>
+         this:RefreshUnit();
+        </OnEvent>
+        <OnUpdate>
+         -- Model_OnUpdate(arg1, this);
+         this:SetCamera(0);
+        </OnUpdate>
+        <OnShow>
+        </OnShow>
+       </Scripts>
+      </PlayerModel>
+
+      <Frame name="$parent_HPBar" inherits="THPF_PetBarTemplate">
+       <Size><AbsDimension x="110" y="18"/></Size>
+       <Anchors>
+        <Anchor point="TOPRIGHT" relativeTo="$parent_Level" relativePoint="BOTTOMRIGHT">
+         <Offset><AbsDimension x="0" y="-3"/></Offset>
+        </Anchor>
+       </Anchors>
+      </Frame>
+      <Frame name="$parent_MPBar" inherits="THPF_PetBarTemplate">
+       <Size><AbsDimension x="10" y="18"/></Size>
+       <Anchors>
+        <Anchor point="TOPRIGHT" relativeTo="$parent_HPBar" relativePoint="BOTTOMRIGHT">
+         <Offset><AbsDimension x="0" y="-2"/></Offset>
+        </Anchor>
+        <Anchor point="TOPLEFT" relativeTo="$parent_HPBar" relativePoint="BOTTOMLEFT">
+         <Offset><AbsDimension x="0" y="-2"/></Offset>
+        </Anchor>
+       </Anchors>
+      </Frame>
+      <Frame name="$parent_Happiness">
+       <Size><AbsDimension x="18" y="18"/></Size>
+       <Anchors>
+        <Anchor point="BOTTOMRIGHT" relativeTo="$parent_PlayerModel" relativePoint="BOTTOMRIGHT">
+         <!-- <Offset><AbsDimension x="2" y="0"/></Offset> -->
+        </Anchor>
+       </Anchors>
+       <Layers>
+        <Layer level="OVERLAY">
+         <Texture name="$parent_Texture" file="Interface\PetPaperDollFrame\UI-PetHappiness">
+          <TexCoords left="0" right="0.1875" top="0" bottom="0.359375"/>
+         </Texture>
+        </Layer>
+       </Layers>
+       <Scripts>
+        <OnEnter>
+         if (this.tooltip) then
+          GameTooltip:SetOwner(this, "ANCHOR_RIGHT");
+          GameTooltip:SetText(this.tooltip);
+          if (this.tooltipDamage) then
+           GameTooltip:AddLine(this.tooltipDamage, "", 1, 1, 1);
+          end
+          if (this.tooltipLoyalty) then
+           GameTooltip:AddLine(this.tooltipLoyalty, "", 1, 1, 1);
+          end
+          GameTooltip:Show();
+         end
+        </OnEnter>
+        <OnLeave>
+         GameTooltip:Hide();
+        </OnLeave>
+       </Scripts>
+      </Frame>
+
+      <Button name="$parent_Buff1" inherits="THPF_PetBuffButtonTemplate" id="1">
+       <Anchors>
+        <Anchor point="TOPRIGHT" relativeTo="$parent_MPBar" relativePoint="BOTTOMRIGHT">
+         <Offset>
+          <AbsDimension x="0" y="-3"/>
+         </Offset>
+        </Anchor>
+       </Anchors>
+      </Button>
+      <Button name="$parent_Buff2" inherits="THPF_PetBuffButtonTemplate" id="2">
+       <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Buff1" relativePoint="TOPLEFT"/></Anchors>
+      </Button>
+      <Button name="$parent_Buff3" inherits="THPF_PetBuffButtonTemplate" id="3">
+       <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Buff2" relativePoint="TOPLEFT"/></Anchors>
+      </Button>
+      <Button name="$parent_Buff4" inherits="THPF_PetBuffButtonTemplate" id="4">
+       <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Buff3" relativePoint="TOPLEFT"/></Anchors>
+      </Button>
+      <Button name="$parent_Buff5" inherits="THPF_PetBuffButtonTemplate" id="5">
+       <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Buff4" relativePoint="TOPLEFT"/></Anchors>
+      </Button>
+      <Button name="$parent_Buff6" inherits="THPF_PetBuffButtonTemplate" id="6">
+       <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Buff5" relativePoint="TOPLEFT"/></Anchors>
+      </Button>
+      <Button name="$parent_Buff7" inherits="THPF_PetBuffButtonTemplate" id="7">
+       <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Buff6" relativePoint="TOPLEFT"/></Anchors>
+      </Button>
+      <Button name="$parent_Buff8" inherits="THPF_PetBuffButtonTemplate" id="8">
+       <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Buff7" relativePoint="TOPLEFT"/></Anchors>
+      </Button>
+      <Button name="$parent_Buff9" inherits="THPF_PetBuffButtonTemplate" id="9">
+       <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Buff1" relativePoint="BOTTOMRIGHT"/></Anchors>
+      </Button>
+      <Button name="$parent_Buff10" inherits="THPF_PetBuffButtonTemplate" id="10">
+       <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Buff9" relativePoint="TOPLEFT"/></Anchors>
+      </Button>
+      <Button name="$parent_Buff11" inherits="THPF_PetBuffButtonTemplate" id="11">
+       <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Buff10" relativePoint="TOPLEFT"/></Anchors>
+      </Button>
+      <Button name="$parent_Buff12" inherits="THPF_PetBuffButtonTemplate" id="12">
+       <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Buff11" relativePoint="TOPLEFT"/></Anchors>
+      </Button>
+      <Button name="$parent_Buff13" inherits="THPF_PetBuffButtonTemplate" id="13">
+       <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Buff12" relativePoint="TOPLEFT"/></Anchors>
+      </Button>
+      <Button name="$parent_Buff14" inherits="THPF_PetBuffButtonTemplate" id="14">
+       <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Buff13" relativePoint="TOPLEFT"/></Anchors>
+      </Button>
+      <Button name="$parent_Buff15" inherits="THPF_PetBuffButtonTemplate" id="15">
+       <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Buff14" relativePoint="TOPLEFT"/></Anchors>
+      </Button>
+      <Button name="$parent_Buff16" inherits="THPF_PetBuffButtonTemplate" id="16">
+       <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Buff15" relativePoint="TOPLEFT"/></Anchors>
+      </Button>
+      <Button name="$parent_Buff17" inherits="THPF_PetBuffButtonTemplate" id="17">
+       <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Buff9" relativePoint="BOTTOMRIGHT"/></Anchors>
+      </Button>
+      <Button name="$parent_Buff18" inherits="THPF_PetBuffButtonTemplate" id="18">
+       <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Buff17" relativePoint="TOPLEFT"/></Anchors>
+      </Button>
+      <Button name="$parent_Buff19" inherits="THPF_PetBuffButtonTemplate" id="19">
+       <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Buff18" relativePoint="TOPLEFT"/></Anchors>
+      </Button>
+      <Button name="$parent_Buff20" inherits="THPF_PetBuffButtonTemplate" id="20">
+       <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Buff19" relativePoint="TOPLEFT"/></Anchors>
+      </Button>
+      <Button name="$parent_Buff21" inherits="THPF_PetBuffButtonTemplate" id="21">
+       <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Buff20" relativePoint="TOPLEFT"/></Anchors>
+      </Button>
+      <Button name="$parent_Buff22" inherits="THPF_PetBuffButtonTemplate" id="22">
+       <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Buff21" relativePoint="TOPLEFT"/></Anchors>
+      </Button>
+      <Button name="$parent_Buff23" inherits="THPF_PetBuffButtonTemplate" id="23">
+       <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Buff22" relativePoint="TOPLEFT"/></Anchors>
+      </Button>
+      <Button name="$parent_Buff24" inherits="THPF_PetBuffButtonTemplate" id="24">
+       <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Buff23" relativePoint="TOPLEFT"/></Anchors>
+      </Button>
+
+      <Button name="$parent_Debuff1" inherits="THPF_PetDebuffButtonTemplate" id="1">
+       <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Buff9" relativePoint="BOTTOMRIGHT"/></Anchors>
+      </Button>
+      <Button name="$parent_Debuff2" inherits="THPF_PetDebuffButtonTemplate" id="2">
+       <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Debuff1" relativePoint="TOPLEFT"/></Anchors>
+      </Button>
+      <Button name="$parent_Debuff3" inherits="THPF_PetDebuffButtonTemplate" id="3">
+       <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Debuff2" relativePoint="TOPLEFT"/></Anchors>
+      </Button>
+      <Button name="$parent_Debuff4" inherits="THPF_PetDebuffButtonTemplate" id="4">
+       <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Debuff3" relativePoint="TOPLEFT"/></Anchors>
+      </Button>
+      <Button name="$parent_Debuff5" inherits="THPF_PetDebuffButtonTemplate" id="5">
+       <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Debuff4" relativePoint="TOPLEFT"/></Anchors>
+      </Button>
+      <Button name="$parent_Debuff6" inherits="THPF_PetDebuffButtonTemplate" id="6">
+       <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Debuff5" relativePoint="TOPLEFT"/></Anchors>
+      </Button>
+      <Button name="$parent_Debuff7" inherits="THPF_PetDebuffButtonTemplate" id="7">
+       <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Debuff6" relativePoint="TOPLEFT"/></Anchors>
+      </Button>
+      <Button name="$parent_Debuff8" inherits="THPF_PetDebuffButtonTemplate" id="8">
+       <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Debuff7" relativePoint="TOPLEFT"/></Anchors>
+      </Button>
+      <Button name="$parent_Debuff9" inherits="THPF_PetDebuffButtonTemplate" id="9">
+       <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Debuff1" relativePoint="BOTTOMRIGHT"/></Anchors>
+      </Button>
+      <Button name="$parent_Debuff10" inherits="THPF_PetDebuffButtonTemplate" id="10">
+       <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Debuff9" relativePoint="TOPLEFT"/></Anchors>
+      </Button>
+      <Button name="$parent_Debuff11" inherits="THPF_PetDebuffButtonTemplate" id="11">
+       <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Debuff10" relativePoint="TOPLEFT"/></Anchors>
+      </Button>
+      <Button name="$parent_Debuff12" inherits="THPF_PetDebuffButtonTemplate" id="12">
+       <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Debuff11" relativePoint="TOPLEFT"/></Anchors>
+      </Button>
+      <Button name="$parent_Debuff13" inherits="THPF_PetDebuffButtonTemplate" id="13">
+       <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Debuff12" relativePoint="TOPLEFT"/></Anchors>
+      </Button>
+      <Button name="$parent_Debuff14" inherits="THPF_PetDebuffButtonTemplate" id="14">
+       <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Debuff13" relativePoint="TOPLEFT"/></Anchors>
+      </Button>
+      <Button name="$parent_Debuff15" inherits="THPF_PetDebuffButtonTemplate" id="15">
+       <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Debuff14" relativePoint="TOPLEFT"/></Anchors>
+      </Button>
+      <Button name="$parent_Debuff16" inherits="THPF_PetDebuffButtonTemplate" id="16">
+       <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Debuff15" relativePoint="TOPLEFT"/></Anchors>
+      </Button>
+
+     </Frames>
+     <Scripts>
+      <OnClick>
+       THPF_Pet_OnClick(arg1);
+      </OnClick>
+      <OnMouseUp>
+       THPF_Pet_MouseUpHandler();
+      </OnMouseUp>
+      <OnMouseDown>
+       THPF_Pet_MouseDownHandler();
+      </OnMouseDown>
+     </Scripts>
+    </Button>
+  <!-- /Pet -->
+
+  <Button name="THTF_TargetFrame" inherits="THPF_UnitFrame" frameStrata="BACKGROUND" toplevel="true" movable="true" parent="UIParent" hidden="true">
+   <Anchors>
+    <Anchor point="TOPLEFT" relativeTo="THPF_MainFrame" relativePoint="TOPRIGHT">
+     <Offset>
+      <AbsDimension x="5" y="0"/>
+     </Offset>
+    </Anchor>
+   </Anchors>
+
+
+
+   <Frames>
+    <Frame>
+     <Layers>
+      <Layer level="OVERLAY">
+       <FontString name="$parent_ComboText" inherits="NumberFontNormalSmall" hidden="true" text="Combo: 1">
+        <Anchors>
+         <Anchor point="CENTER" relativeTo="$parent_PlayerModel" relativePoint="BOTTOM"/>
+        </Anchors>
+       </FontString>
+      </Layer>
+     </Layers>
+    </Frame>
+
+    <Button name="$parent_Buff1" inherits="THPF_TargetBuffButtonTemplate" id="1">
+     <Anchors>
+      <Anchor point="TOPRIGHT" relativeTo="$parent_PlayerDesc" relativePoint="BOTTOMRIGHT">
+       <Offset>
+        <AbsDimension x="0" y="-3"/>
+       </Offset>
+      </Anchor>
+     </Anchors>
+    </Button>
+    <Button name="$parent_Buff2" inherits="THPF_TargetBuffButtonTemplate" id="2">
+     <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Buff1" relativePoint="TOPLEFT"/></Anchors>
+    </Button>
+    <Button name="$parent_Buff3" inherits="THPF_TargetBuffButtonTemplate" id="3">
+     <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Buff2" relativePoint="TOPLEFT"/></Anchors>
+    </Button>
+    <Button name="$parent_Buff4" inherits="THPF_TargetBuffButtonTemplate" id="4">
+     <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Buff3" relativePoint="TOPLEFT"/></Anchors>
+    </Button>
+    <Button name="$parent_Buff5" inherits="THPF_TargetBuffButtonTemplate" id="5">
+     <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Buff4" relativePoint="TOPLEFT"/></Anchors>
+    </Button>
+    <Button name="$parent_Buff6" inherits="THPF_TargetBuffButtonTemplate" id="6">
+     <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Buff5" relativePoint="TOPLEFT"/></Anchors>
+    </Button>
+    <Button name="$parent_Buff7" inherits="THPF_TargetBuffButtonTemplate" id="7">
+     <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Buff6" relativePoint="TOPLEFT"/></Anchors>
+    </Button>
+    <Button name="$parent_Buff8" inherits="THPF_TargetBuffButtonTemplate" id="8">
+     <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Buff7" relativePoint="TOPLEFT"/></Anchors>
+    </Button>
+    <Button name="$parent_Buff9" inherits="THPF_TargetBuffButtonTemplate" id="9">
+     <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Buff1" relativePoint="BOTTOMRIGHT"/></Anchors>
+    </Button>
+    <Button name="$parent_Buff10" inherits="THPF_TargetBuffButtonTemplate" id="10">
+     <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Buff9" relativePoint="TOPLEFT"/></Anchors>
+    </Button>
+    <Button name="$parent_Buff11" inherits="THPF_TargetBuffButtonTemplate" id="11">
+     <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Buff10" relativePoint="TOPLEFT"/></Anchors>
+    </Button>
+    <Button name="$parent_Buff12" inherits="THPF_TargetBuffButtonTemplate" id="12">
+     <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Buff11" relativePoint="TOPLEFT"/></Anchors>
+    </Button>
+    <Button name="$parent_Buff13" inherits="THPF_TargetBuffButtonTemplate" id="13">
+     <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Buff12" relativePoint="TOPLEFT"/></Anchors>
+    </Button>
+    <Button name="$parent_Buff14" inherits="THPF_TargetBuffButtonTemplate" id="14">
+     <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Buff13" relativePoint="TOPLEFT"/></Anchors>
+    </Button>
+    <Button name="$parent_Buff15" inherits="THPF_TargetBuffButtonTemplate" id="15">
+     <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Buff14" relativePoint="TOPLEFT"/></Anchors>
+    </Button>
+    <Button name="$parent_Buff16" inherits="THPF_TargetBuffButtonTemplate" id="16">
+     <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Buff15" relativePoint="TOPLEFT"/></Anchors>
+    </Button>
+    <Button name="$parent_Buff17" inherits="THPF_TargetBuffButtonTemplate" id="17">
+     <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Buff9" relativePoint="BOTTOMRIGHT"/></Anchors>
+    </Button>
+    <Button name="$parent_Buff18" inherits="THPF_TargetBuffButtonTemplate" id="18">
+     <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Buff17" relativePoint="TOPLEFT"/></Anchors>
+    </Button>
+    <Button name="$parent_Buff19" inherits="THPF_TargetBuffButtonTemplate" id="19">
+     <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Buff18" relativePoint="TOPLEFT"/></Anchors>
+    </Button>
+    <Button name="$parent_Buff20" inherits="THPF_TargetBuffButtonTemplate" id="20">
+     <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Buff19" relativePoint="TOPLEFT"/></Anchors>
+    </Button>
+    <Button name="$parent_Buff21" inherits="THPF_TargetBuffButtonTemplate" id="21">
+     <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Buff20" relativePoint="TOPLEFT"/></Anchors>
+    </Button>
+    <Button name="$parent_Buff22" inherits="THPF_TargetBuffButtonTemplate" id="22">
+     <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Buff21" relativePoint="TOPLEFT"/></Anchors>
+    </Button>
+    <Button name="$parent_Buff23" inherits="THPF_TargetBuffButtonTemplate" id="23">
+     <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Buff22" relativePoint="TOPLEFT"/></Anchors>
+    </Button>
+    <Button name="$parent_Buff24" inherits="THPF_TargetBuffButtonTemplate" id="24">
+     <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Buff23" relativePoint="TOPLEFT"/></Anchors>
+    </Button>
+
+    <Button name="$parent_Debuff1" inherits="THPF_TargetDebuffButtonTemplate" id="1">
+     <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Buff9" relativePoint="BOTTOMRIGHT"/></Anchors>
+    </Button>
+    <Button name="$parent_Debuff2" inherits="THPF_TargetDebuffButtonTemplate" id="2">
+     <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Debuff1" relativePoint="TOPLEFT"/></Anchors>
+    </Button>
+    <Button name="$parent_Debuff3" inherits="THPF_TargetDebuffButtonTemplate" id="3">
+     <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Debuff2" relativePoint="TOPLEFT"/></Anchors>
+    </Button>
+    <Button name="$parent_Debuff4" inherits="THPF_TargetDebuffButtonTemplate" id="4">
+     <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Debuff3" relativePoint="TOPLEFT"/></Anchors>
+    </Button>
+    <Button name="$parent_Debuff5" inherits="THPF_TargetDebuffButtonTemplate" id="5">
+     <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Debuff4" relativePoint="TOPLEFT"/></Anchors>
+    </Button>
+    <Button name="$parent_Debuff6" inherits="THPF_TargetDebuffButtonTemplate" id="6">
+     <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Debuff5" relativePoint="TOPLEFT"/></Anchors>
+    </Button>
+    <Button name="$parent_Debuff7" inherits="THPF_TargetDebuffButtonTemplate" id="7">
+     <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Debuff6" relativePoint="TOPLEFT"/></Anchors>
+    </Button>
+    <Button name="$parent_Debuff8" inherits="THPF_TargetDebuffButtonTemplate" id="8">
+     <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Debuff7" relativePoint="TOPLEFT"/></Anchors>
+    </Button>
+    <Button name="$parent_Debuff9" inherits="THPF_TargetDebuffButtonTemplate" id="9">
+     <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Debuff1" relativePoint="BOTTOMRIGHT"/></Anchors>
+    </Button>
+    <Button name="$parent_Debuff10" inherits="THPF_TargetDebuffButtonTemplate" id="10">
+     <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Debuff9" relativePoint="TOPLEFT"/></Anchors>
+    </Button>
+    <Button name="$parent_Debuff11" inherits="THPF_TargetDebuffButtonTemplate" id="11">
+     <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Debuff10" relativePoint="TOPLEFT"/></Anchors>
+    </Button>
+    <Button name="$parent_Debuff12" inherits="THPF_TargetDebuffButtonTemplate" id="12">
+     <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Debuff11" relativePoint="TOPLEFT"/></Anchors>
+    </Button>
+    <Button name="$parent_Debuff13" inherits="THPF_TargetDebuffButtonTemplate" id="13">
+     <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Debuff12" relativePoint="TOPLEFT"/></Anchors>
+    </Button>
+    <Button name="$parent_Debuff14" inherits="THPF_TargetDebuffButtonTemplate" id="14">
+     <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Debuff13" relativePoint="TOPLEFT"/></Anchors>
+    </Button>
+    <Button name="$parent_Debuff15" inherits="THPF_TargetDebuffButtonTemplate" id="15">
+     <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Debuff14" relativePoint="TOPLEFT"/></Anchors>
+    </Button>
+    <Button name="$parent_Debuff16" inherits="THPF_TargetDebuffButtonTemplate" id="16">
+     <Anchors><Anchor point="TOPRIGHT" relativeTo="$parent_Debuff15" relativePoint="TOPLEFT"/></Anchors>
+    </Button>
+   </Frames>
+
+   <Scripts>
+    <OnLoad>
+     THTF_OnLoad();
+    </OnLoad>
+    <OnEvent>
+     THTF_OnEvent(event);
+    </OnEvent>
+    <OnClick>
+     THTF_OnClick(arg1);
+    </OnClick>
+    <OnMouseUp>
+     THTF_MouseUpHandler("up");
+    </OnMouseUp>
+    <OnMouseDown>
+     THTF_MouseDownHandler("up");
+    </OnMouseDown>
+   </Scripts>
+  </Button>
+
+  <Button name="THTF_TargetFrame_ToT" frameStrata="BACKGROUND" toplevel="true" movable="true" parent="UIParent" hidden="true">
+   <Size>
+    <AbsDimension x="100" y="50"/>
+   </Size>
+   <Anchors>
+    <Anchor point="TOPLEFT" relativeTo="THTF_TargetFrame_HPBar" relativePoint="TOPRIGHT">
+     <Offset><AbsDimension x="8" y="0"/></Offset>
+    </Anchor>
+    <Anchor point="BOTTOMLEFT" relativeTo="THTF_TargetFrame_MPBar" relativePoint="BOTTOMRIGHT">
+     <Offset><AbsDimension x="8" y="0"/></Offset>
+    </Anchor>
+   </Anchors>
+   <Layers>
+    <Layer level="BACKGROUND">
+     <Texture name="$parent_BGTexture">
+      <Color r="0.0" g="0.0" b="0.0"/>
+     </Texture>
+    </Layer>
+    <Layer level="BACKGROUND">
+     <FontString name="$parent_Name" inherits="GameFontNormalSmall" justifyH="LEFT" text="Target of target's name">
+      <Size>
+       <AbsDimension x="100" y="20"/>
+      </Size>
+      <Anchors>
+       <Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="TOPLEFT">
+        <Offset><AbsDimension x="1" y="-1"/></Offset>
+       </Anchor>
+       <Anchor point="TOPRIGHT" relativeTo="$parent" relativePoint="TOPRIGHT">
+        <Offset><AbsDimension x="-1" y="-1"/></Offset>
+       </Anchor>
+      </Anchors>
+      <Color r="1.0" g="1.0" b="0.0"/>
+     </FontString>
+    </Layer>
+   </Layers>
+   <Frames>
+    <StatusBar name="$parent_HPBar">
+     <Size><AbsDimension x="171" y="10"/></Size>
+     <Anchors>
+      <Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="TOPLEFT">
+       <Offset><AbsDimension x="2" y="-20"/></Offset>
+      </Anchor>
+       <Anchor point="TOPRIGHT" relativeTo="$parent" relativePoint="TOPRIGHT">
+        <Offset><AbsDimension x="-2" y="-20"/></Offset>
+       </Anchor>
+     </Anchors>
+     <BarTexture file="Interface\TargetingFrame\UI-StatusBar"/>
+     <BarColor r="1.0" g="0.0" b="0.0"/>
+
+     <Layers>
+      <Layer level="OVERLAY">
+       <FontString name="$parent_Text" inherits="GameFontNormalSmall" text="100%">
+        <Anchors>
+         <Anchor point="CENTER" relativeTo="$parent"/>
+        </Anchors>
+        <Color r="1.0" g="1.0" b="1.0"/>
+       </FontString>
+      </Layer>
+     </Layers>
+    </StatusBar>
+    <StatusBar name="$parent_MPBar">
+     <Size><AbsDimension x="171" y="10"/></Size>
+     <Anchors>
+      <Anchor point="TOPLEFT" relativeTo="$parent_HPBar" relativePoint="BOTTOMLEFT">
+       <Offset><AbsDimension x="0" y="-2"/></Offset>
+      </Anchor>
+       <Anchor point="TOPRIGHT" relativeTo="$parent_HPBar" relativePoint="BOTTOMRIGHT">
+        <Offset><AbsDimension x="0" y="-2"/></Offset>
+       </Anchor>
+     </Anchors>
+     <BarTexture file="Interface\TargetingFrame\UI-StatusBar"/>
+     <BarColor r="0.0" g="0.0" b="0.7"/>
+
+     <Layers>
+      <Layer level="OVERLAY">
+       <FontString name="$parent_Text" inherits="GameFontNormalSmall" text="100%">
+        <Anchors>
+         <Anchor point="CENTER" relativeTo="$parent"/>
+        </Anchors>
+        <Color r="1.0" g="1.0" b="1.0"/>
+       </FontString>
+      </Layer>
+     </Layers>
+    </StatusBar>
+
+    <Button name="$parent_Buff1" inherits="THPF_ToTBuffButtonTemplate" id="1">
+     <Size><AbsDimension x="11" y="11"/></Size>
+     <Anchors>
+      <Anchor point="TOPLEFT" relativeTo="$parent_MPBar" relativePoint="BOTTOMLEFT">
+        <Offset><AbsDimension x="0" y="-2"/></Offset>
+      </Anchor>
+     </Anchors>
+    </Button>
+    <Button name="$parent_Buff2" inherits="THPF_ToTBuffButtonTemplate" id="2">
+     <Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Buff1" relativePoint="TOPRIGHT"/></Anchors>
+    </Button>
+    <Button name="$parent_Buff3" inherits="THPF_ToTBuffButtonTemplate" id="3">
+     <Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Buff2" relativePoint="TOPRIGHT"/></Anchors>
+    </Button>
+    <Button name="$parent_Buff4" inherits="THPF_ToTBuffButtonTemplate" id="4">
+     <Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Buff3" relativePoint="TOPRIGHT"/></Anchors>
+    </Button>
+    <Button name="$parent_Buff5" inherits="THPF_ToTBuffButtonTemplate" id="5">
+     <Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Buff4" relativePoint="TOPRIGHT"/></Anchors>
+    </Button>
+    <Button name="$parent_Buff6" inherits="THPF_ToTBuffButtonTemplate" id="6">
+     <Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Buff5" relativePoint="TOPRIGHT"/></Anchors>
+    </Button>
+    <Button name="$parent_Buff7" inherits="THPF_ToTBuffButtonTemplate" id="7">
+     <Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Buff6" relativePoint="TOPRIGHT"/></Anchors>
+    </Button>
+    <Button name="$parent_Buff8" inherits="THPF_ToTBuffButtonTemplate" id="8">
+     <Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Buff7" relativePoint="TOPRIGHT"/></Anchors>
+    </Button>
+    <Button name="$parent_Buff9" inherits="THPF_ToTBuffButtonTemplate" id="9">
+     <Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Buff1" relativePoint="BOTTOMLEFT"/></Anchors>
+    </Button>
+    <Button name="$parent_Buff10" inherits="THPF_ToTBuffButtonTemplate" id="10">
+     <Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Buff9" relativePoint="TOPRIGHT"/></Anchors>
+    </Button>
+    <Button name="$parent_Buff11" inherits="THPF_ToTBuffButtonTemplate" id="11">
+     <Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Buff10" relativePoint="TOPRIGHT"/></Anchors>
+    </Button>
+    <Button name="$parent_Buff12" inherits="THPF_ToTBuffButtonTemplate" id="12">
+     <Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Buff11" relativePoint="TOPRIGHT"/></Anchors>
+    </Button>
+    <Button name="$parent_Buff13" inherits="THPF_ToTBuffButtonTemplate" id="13">
+     <Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Buff12" relativePoint="TOPRIGHT"/></Anchors>
+    </Button>
+    <Button name="$parent_Buff14" inherits="THPF_ToTBuffButtonTemplate" id="14">
+     <Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Buff13" relativePoint="TOPRIGHT"/></Anchors>
+    </Button>
+    <Button name="$parent_Buff15" inherits="THPF_ToTBuffButtonTemplate" id="15">
+     <Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Buff14" relativePoint="TOPRIGHT"/></Anchors>
+    </Button>
+    <Button name="$parent_Buff16" inherits="THPF_ToTBuffButtonTemplate" id="16">
+     <Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Buff15" relativePoint="TOPRIGHT"/></Anchors>
+    </Button>
+
+    <Button name="$parent_Debuff1" inherits="THPF_ToTDebuffButtonTemplate" id="1">
+     <Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Buff9" relativePoint="BOTTOMLEFT"/></Anchors>
+    </Button>
+    <Button name="$parent_Debuff2" inherits="THPF_ToTDebuffButtonTemplate" id="2">
+     <Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Debuff1" relativePoint="TOPRIGHT"/></Anchors>
+    </Button>
+    <Button name="$parent_Debuff3" inherits="THPF_ToTDebuffButtonTemplate" id="3">
+     <Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Debuff2" relativePoint="TOPRIGHT"/></Anchors>
+    </Button>
+    <Button name="$parent_Debuff4" inherits="THPF_ToTDebuffButtonTemplate" id="4">
+     <Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Debuff3" relativePoint="TOPRIGHT"/></Anchors>
+    </Button>
+    <Button name="$parent_Debuff5" inherits="THPF_ToTDebuffButtonTemplate" id="5">
+     <Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Debuff4" relativePoint="TOPRIGHT"/></Anchors>
+    </Button>
+    <Button name="$parent_Debuff6" inherits="THPF_ToTDebuffButtonTemplate" id="6">
+     <Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Debuff5" relativePoint="TOPRIGHT"/></Anchors>
+    </Button>
+    <Button name="$parent_Debuff7" inherits="THPF_ToTDebuffButtonTemplate" id="7">
+     <Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Debuff6" relativePoint="TOPRIGHT"/></Anchors>
+    </Button>
+    <Button name="$parent_Debuff8" inherits="THPF_ToTDebuffButtonTemplate" id="8">
+     <Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Debuff7" relativePoint="TOPRIGHT"/></Anchors>
+    </Button>
+    <Button name="$parent_Debuff9" inherits="THPF_ToTDebuffButtonTemplate" id="9">
+     <Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Debuff1" relativePoint="BOTTOMLEFT"/></Anchors>
+    </Button>
+    <Button name="$parent_Debuff10" inherits="THPF_ToTDebuffButtonTemplate" id="10">
+     <Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Debuff9" relativePoint="TOPRIGHT"/></Anchors>
+    </Button>
+    <Button name="$parent_Debuff11" inherits="THPF_ToTDebuffButtonTemplate" id="11">
+     <Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Debuff10" relativePoint="TOPRIGHT"/></Anchors>
+    </Button>
+    <Button name="$parent_Debuff12" inherits="THPF_ToTDebuffButtonTemplate" id="12">
+     <Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Debuff11" relativePoint="TOPRIGHT"/></Anchors>
+    </Button>
+    <Button name="$parent_Debuff13" inherits="THPF_ToTDebuffButtonTemplate" id="13">
+     <Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Debuff12" relativePoint="TOPRIGHT"/></Anchors>
+    </Button>
+    <Button name="$parent_Debuff14" inherits="THPF_ToTDebuffButtonTemplate" id="14">
+     <Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Debuff13" relativePoint="TOPRIGHT"/></Anchors>
+    </Button>
+    <Button name="$parent_Debuff15" inherits="THPF_ToTDebuffButtonTemplate" id="15">
+     <Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Debuff14" relativePoint="TOPRIGHT"/></Anchors>
+    </Button>
+    <Button name="$parent_Debuff16" inherits="THPF_ToTDebuffButtonTemplate" id="16">
+     <Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Debuff15" relativePoint="TOPRIGHT"/></Anchors>
+    </Button>
+
+   </Frames>
+   <Scripts>
+    <OnClick>
+     THTF_ToT_OnClick(arg1);
+    </OnClick>
+    <OnMouseUp>
+     THTF_ToT_MouseUpHandler();
+    </OnMouseUp>
+    <OnMouseDown>
+     THTF_ToT_MouseDownHandler();
+    </OnMouseDown>
+   </Scripts>
+  </Button>
+
+  <Frame name="THTF_TCFrame" toplevel="true" parent="UIParent">
+   <Size><AbsDimension x="1" y="1"/></Size>
+   <Anchors><Anchor point="BOTTOMRIGHT" relativeTo="UIParent" relativePoint="TOPLEFT"/></Anchors>
+   <Scripts>
+    <OnLoad>
+     this:RegisterEvent("PLAYER_TARGET_CHANGED");
+    </OnLoad>
+    <OnEvent>
+     THTF_OnEvent(event);
+    </OnEvent>
+    <OnUpdate>
+     THTF_OnUpdate(arg1);
+    </OnUpdate>
+   </Scripts>
+  </Frame>
+
+    <Frame name="THPF_DropDown" inherits="UIDropDownMenuTemplate" id="1" hidden="true">
+     <Size><AbsDimension x="10" y="10"/></Size>
+     <Anchors>
+      <Anchor point="TOP">
+       <Offset><AbsDimension x="0" y="0"/></Offset>
+      </Anchor>
+     </Anchors>
+     <Scripts>
+      <OnLoad>
+       THPF_DropDown_OnLoad();
+       UnitPopupFrames[ getn(UnitPopupFrames)+1 ] = "THPF_DropDown";
+      </OnLoad>
+     </Scripts>
+    </Frame>
+
+    <Frame name="THPF_Pet_DropDown" inherits="UIDropDownMenuTemplate" id="1" hidden="true">
+     <Size><AbsDimension x="10" y="10"/></Size>
+     <Anchors>
+      <Anchor point="TOP">
+       <Offset><AbsDimension x="0" y="0"/></Offset>
+      </Anchor>
+     </Anchors>
+     <Scripts>
+      <OnLoad>
+       THPF_Pet_DropDown_OnLoad();
+       UnitPopupFrames[ getn(UnitPopupFrames)+1 ] = "THPF_Pet_DropDown";
+      </OnLoad>
+     </Scripts>
+    </Frame>
+
+    <Frame name="THTF_DropDown" inherits="UIDropDownMenuTemplate" id="1" hidden="true">
+     <Size><AbsDimension x="10" y="10"/></Size>
+     <Anchors>
+      <Anchor point="TOP">
+       <Offset><AbsDimension x="0" y="0"/></Offset>
+      </Anchor>
+     </Anchors>
+     <Scripts>
+      <OnLoad>
+       THTF_DropDown_OnLoad();
+       UnitPopupFrames[ getn(UnitPopupFrames)+1 ] = "THTF_DropDown";
+      </OnLoad>
+     </Scripts>
+    </Frame>
+
+</Ui>

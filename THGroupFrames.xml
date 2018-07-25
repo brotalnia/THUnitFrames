@@ -1,0 +1,401 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
+
+  <Script file="THGroupFrames.lua"/>
+
+  <GameTooltip name="THGF_Tooltip" inherits="GameTooltipTemplate">
+  </GameTooltip>
+
+  <Button name="THGF_GroupBuffButtonTemplate" inherits="THPF_BuffButtonTemplate" virtual="true">
+  </Button>
+
+  <Button name="THGF_GroupDebuffButtonTemplate" inherits="THPF_DebuffButtonTemplate" virtual="true">
+   <Scripts>
+    <OnClick>
+     --ChatFrame1:AddMessage("--here--");
+     THGF_DebuffClicked(this.unit, this.id, this.debuffType);
+    </OnClick>
+   </Scripts>
+  </Button>
+
+  <Frame name="THGF_EventFrame" toplevel="true" parent="UIParent">
+   <Size><AbsDimension x="1" y="1"/></Size>
+   <Anchors><Anchor point="BOTTOMRIGHT" relativeTo="UIParent" relativePoint="TOPLEFT"/></Anchors>
+   <Scripts>
+    <OnLoad>
+     THGF_OnLoad();
+    </OnLoad>
+    <OnEvent>
+     THGF_OnEvent(event);
+    </OnEvent>
+    <OnUpdate>
+     THGF_OnUpdate(arg1);
+    </OnUpdate>
+   </Scripts>
+  </Frame>
+
+  <Frame name="THGF_StatusBarTemplate" virtual="true">
+   <Size><AbsDimension x="150" y="14"/></Size>
+   <Layers>
+    <Layer level="BACKGROUND">
+     <Texture name="$parent_GradientBG"><Color r="0.5" g="0.5" b="0.5"/></Texture>
+    </Layer>
+   </Layers>
+   <Frames>
+    <Frame>
+     <Anchors>
+      <Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="TOPLEFT">
+       <Offset><AbsDimension x="1" y="-1"/></Offset>
+      </Anchor>
+      <Anchor point="BOTTOMRIGHT" relativeTo="$parent" relativePoint="BOTTOMRIGHT">
+       <Offset><AbsDimension x="-1" y="1"/></Offset>
+      </Anchor>
+     </Anchors>
+     <Layers>
+      <Layer level="BACKGROUND">
+       <Texture><Color r="0.1" g="0.1" b="0.1"/></Texture>
+      </Layer>
+     </Layers>
+    </Frame>
+    <StatusBar name="$parent_SB">
+     <Anchors>
+      <Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="TOPLEFT">
+       <Offset><AbsDimension x="1" y="-1"/></Offset>
+      </Anchor>
+      <Anchor point="BOTTOMRIGHT" relativeTo="$parent" relativePoint="BOTTOMRIGHT">
+       <Offset><AbsDimension x="-1" y="1"/></Offset>
+      </Anchor>
+     </Anchors>
+     <BarTexture file="Interface\TargetingFrame\UI-StatusBar"/>
+     <BarColor r="1.0" g="0.0" b="0.0"/>
+
+     <Layers>
+      <Layer level="OVERLAY">
+       <FontString name="$parent_Text" inherits="GameFontNormalSmall" text="5234/8538">
+        <Anchors><Anchor point="CENTER"/></Anchors>
+        <Color r="1.0" g="1.0" b="1.0"/>
+       </FontString>
+      </Layer>
+     </Layers>
+
+    </StatusBar>
+   </Frames>
+  </Frame>
+
+  <Button name="THGF_PartyMemberTemplate" virtual="true" frameStrata="BACKGROUND" toplevel="true" movable="true" parent="UIParent" hidden="true">
+   <Size><AbsDimension x="200" y="50"/></Size>
+
+<!--
+   <Layers>
+    <Layer level="BACKGROUND">
+     <Texture name="$parent_GradientBG">
+      <Size><AbsDimension x="150" y="50"/></Size>
+      <Anchors><Anchor point="TOPLEFT"><Offset><AbsDimension x="80" y="0"/></Offset></Anchor></Anchors>
+      <Color r="1" g="1" b="0"/>
+     </Texture>
+    </Layer>
+   </Layers>
+-->
+
+   <Frames>
+    <Frame name="$parent_PMBG">
+     <Size><AbsDimension x="40" y="50"/></Size>
+     <Anchors>
+      <Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="TOPLEFT">
+       <Offset><AbsDimension x="5" y="-5"/></Offset>
+      </Anchor>
+     </Anchors>
+     <Layers>
+      <Layer level="BACKGROUND">
+       <Texture name="$parent_BGTexture">
+        <Size><AbsDimension x="51" y="50"/></Size>
+        <Anchors><Anchor point="TOPLEFT"><Offset><AbsDimension x="-6" y="5"/></Offset></Anchor></Anchors>
+        <Color r="0" g="0" b="0"/>
+       </Texture>
+      </Layer>
+     </Layers>
+    </Frame>
+    <PlayerModel name="$parent_PlayerModel">
+     <Size><AbsDimension x="40" y="40"/></Size>
+     <Anchors>
+      <Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="TOPLEFT">
+       <Offset><AbsDimension x="5" y="-5"/></Offset>
+      </Anchor>
+     </Anchors>
+<!--
+     <Layers>
+      <Layer level="BACKGROUND">
+       <Texture name="$parent_BGTexture">
+        <Size><AbsDimension x="51" y="50"/></Size>
+        <Anchors><Anchor point="TOPLEFT"><Offset><AbsDimension x="-6" y="5"/></Offset></Anchor></Anchors>
+        <Color r="0" g="0" b="0"/>
+       </Texture>
+      </Layer>
+     </Layers>
+-->
+     <Scripts>
+      <OnLoad>
+       Model_OnLoad();
+       this:RegisterEvent("DISPLAY_SIZE_CHANGED");
+      </OnLoad>
+      <OnEvent>
+       this:RefreshUnit();
+      </OnEvent>
+      <OnUpdate>
+       -- Model_OnUpdate(arg1, this);
+       this:SetCamera(0);
+      </OnUpdate>
+      <OnShow>
+      </OnShow>
+     </Scripts>
+    </PlayerModel>
+
+    <Frame name="$parent_Data">
+     <Size><AbsDimension x="150" y="50"/></Size>
+     <Anchors>
+      <Anchor point="TOPLEFT"> <!-- relativeTo="$parent" relativePoint="TOPLEFT"> -->
+       <Offset><AbsDimension x="50" y="0"/></Offset>
+      </Anchor>
+     </Anchors>
+     <Layers>
+      <Layer level="BACKGROUND">
+       <Texture name="$parent_GradientBG"><Color r="0" g="0" b="0"/></Texture>
+      </Layer>
+      <Layer level="ARTWORK">
+       <FontString name="$parent_Name" inherits="GameFontNormalSmall" text="Unitname">
+        <Anchors>
+         <Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="TOPLEFT">
+          <Offset><AbsDimension x="0" y="-5"/></Offset>
+         </Anchor>
+        </Anchors>
+       </FontString>
+       <Texture name="$parent_LeaderIcon" file="Interface\GroupFrame\UI-Group-LeaderIcon" hidden="true">
+        <Size><AbsDimension x="16" y="16"/></Size>
+        <Anchors>
+         <Anchor point="TOPLEFT" relativeTo="$parent_Name" relativePoint="TOPRIGHT">
+          <Offset><AbsDimension x="2" y="2"/></Offset>
+         </Anchor>
+        </Anchors>
+       </Texture>
+      </Layer>
+     </Layers>
+     <Frames>
+      <Frame name="$parent_HP" inherits="THGF_StatusBarTemplate">
+       <Anchors>
+        <Anchor point="TOPLEFT" relativeTo="$parent_Name" relativePoint="BOTTOMLEFT">
+         <Offset><AbsDimension x="0" y="-2"/></Offset>
+        </Anchor>
+       </Anchors>
+      </Frame>
+      <Frame name="$parent_MP" inherits="THGF_StatusBarTemplate">
+       <Anchors>
+        <Anchor point="TOPLEFT" relativeTo="$parent_HP" relativePoint="BOTTOMLEFT">
+         <Offset><AbsDimension x="0" y="-1"/></Offset>
+        </Anchor>
+       </Anchors>
+      </Frame>
+     </Frames>
+    </Frame>
+
+    <Button name="$parent_Buff1" inherits="THGF_GroupBuffButtonTemplate" id="1">
+     <Anchors>
+      <Anchor point="TOPLEFT" relativeTo="$parent_Data_HP" relativePoint="TOPRIGHT">
+       <Offset><AbsDimension x="2" y="0"/></Offset>
+      </Anchor>
+     </Anchors>
+    </Button>
+    <Button name="$parent_Buff2" inherits="THGF_GroupBuffButtonTemplate" id="2">
+     <Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Buff1" relativePoint="TOPRIGHT"/></Anchors>
+    </Button>
+    <Button name="$parent_Buff3" inherits="THGF_GroupBuffButtonTemplate" id="3">
+     <Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Buff2" relativePoint="TOPRIGHT"/></Anchors>
+    </Button>
+    <Button name="$parent_Buff4" inherits="THGF_GroupBuffButtonTemplate" id="4">
+     <Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Buff3" relativePoint="TOPRIGHT"/></Anchors>
+    </Button>
+    <Button name="$parent_Buff5" inherits="THGF_GroupBuffButtonTemplate" id="5">
+     <Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Buff4" relativePoint="TOPRIGHT"/></Anchors>
+    </Button>
+    <Button name="$parent_Buff6" inherits="THGF_GroupBuffButtonTemplate" id="6">
+     <Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Buff5" relativePoint="TOPRIGHT"/></Anchors>
+    </Button>
+    <Button name="$parent_Buff7" inherits="THGF_GroupBuffButtonTemplate" id="7">
+     <Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Buff6" relativePoint="TOPRIGHT"/></Anchors>
+    </Button>
+    <Button name="$parent_Buff8" inherits="THGF_GroupBuffButtonTemplate" id="8">
+     <Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Buff7" relativePoint="TOPRIGHT"/></Anchors>
+    </Button>
+    <Button name="$parent_Buff9" inherits="THGF_GroupBuffButtonTemplate" id="9">
+     <Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Buff8" relativePoint="TOPRIGHT"/></Anchors>
+    </Button>
+    <Button name="$parent_Buff10" inherits="THGF_GroupBuffButtonTemplate" id="10">
+     <Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Buff9" relativePoint="TOPRIGHT"/></Anchors>
+    </Button>
+    <Button name="$parent_Buff11" inherits="THGF_GroupBuffButtonTemplate" id="11">
+     <Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Buff10" relativePoint="TOPRIGHT"/></Anchors>
+    </Button>
+    <Button name="$parent_Buff12" inherits="THGF_GroupBuffButtonTemplate" id="12">
+     <Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Buff11" relativePoint="TOPRIGHT"/></Anchors>
+    </Button>
+    <Button name="$parent_Buff13" inherits="THGF_GroupBuffButtonTemplate" id="13">
+     <Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Buff12" relativePoint="TOPRIGHT"/></Anchors>
+    </Button>
+    <Button name="$parent_Buff14" inherits="THGF_GroupBuffButtonTemplate" id="14">
+     <Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Buff13" relativePoint="TOPRIGHT"/></Anchors>
+    </Button>
+    <Button name="$parent_Buff15" inherits="THGF_GroupBuffButtonTemplate" id="15">
+     <Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Buff14" relativePoint="TOPRIGHT"/></Anchors>
+    </Button>
+    <Button name="$parent_Buff16" inherits="THGF_GroupBuffButtonTemplate" id="16">
+     <Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Buff15" relativePoint="TOPRIGHT"/></Anchors>
+    </Button>
+    <Button name="$parent_Buff17" inherits="THGF_GroupBuffButtonTemplate" id="17">
+     <Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Buff16" relativePoint="TOPRIGHT"/></Anchors>
+    </Button>
+    <Button name="$parent_Buff18" inherits="THGF_GroupBuffButtonTemplate" id="18">
+     <Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Buff17" relativePoint="TOPRIGHT"/></Anchors>
+    </Button>
+    <Button name="$parent_Buff19" inherits="THGF_GroupBuffButtonTemplate" id="19">
+     <Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Buff18" relativePoint="TOPRIGHT"/></Anchors>
+    </Button>
+    <Button name="$parent_Buff20" inherits="THGF_GroupBuffButtonTemplate" id="20">
+     <Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Buff19" relativePoint="TOPRIGHT"/></Anchors>
+    </Button>
+    <Button name="$parent_Buff21" inherits="THGF_GroupBuffButtonTemplate" id="21">
+     <Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Buff20" relativePoint="TOPRIGHT"/></Anchors>
+    </Button>
+    <Button name="$parent_Buff22" inherits="THGF_GroupBuffButtonTemplate" id="22">
+     <Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Buff21" relativePoint="TOPRIGHT"/></Anchors>
+    </Button>
+    <Button name="$parent_Buff23" inherits="THGF_GroupBuffButtonTemplate" id="23">
+     <Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Buff22" relativePoint="TOPRIGHT"/></Anchors>
+    </Button>
+    <Button name="$parent_Buff24" inherits="THGF_GroupBuffButtonTemplate" id="24">
+     <Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Buff23" relativePoint="TOPRIGHT"/></Anchors>
+    </Button>
+
+    <Button name="$parent_Debuff1" inherits="THGF_GroupDebuffButtonTemplate" id="1">
+     <Anchors>
+      <Anchor point="TOPLEFT" relativeTo="$parent_Buff1" relativePoint="BOTTOMLEFT">
+       <Offset><AbsDimension x="0" y="0"/></Offset>
+      </Anchor>
+     </Anchors>
+    </Button>
+    <Button name="$parent_Debuff2" inherits="THGF_GroupDebuffButtonTemplate" id="2">
+     <Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Debuff1" relativePoint="TOPRIGHT"/></Anchors>
+    </Button>
+    <Button name="$parent_Debuff3" inherits="THGF_GroupDebuffButtonTemplate" id="3">
+     <Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Debuff2" relativePoint="TOPRIGHT"/></Anchors>
+    </Button>
+    <Button name="$parent_Debuff4" inherits="THGF_GroupDebuffButtonTemplate" id="4">
+     <Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Debuff3" relativePoint="TOPRIGHT"/></Anchors>
+    </Button>
+    <Button name="$parent_Debuff5" inherits="THGF_GroupDebuffButtonTemplate" id="5">
+     <Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Debuff4" relativePoint="TOPRIGHT"/></Anchors>
+    </Button>
+    <Button name="$parent_Debuff6" inherits="THGF_GroupDebuffButtonTemplate" id="6">
+     <Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Debuff5" relativePoint="TOPRIGHT"/></Anchors>
+    </Button>
+    <Button name="$parent_Debuff7" inherits="THGF_GroupDebuffButtonTemplate" id="7">
+     <Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Debuff6" relativePoint="TOPRIGHT"/></Anchors>
+    </Button>
+    <Button name="$parent_Debuff8" inherits="THGF_GroupDebuffButtonTemplate" id="8">
+     <Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Debuff7" relativePoint="TOPRIGHT"/></Anchors>
+    </Button>
+    <Button name="$parent_Debuff9" inherits="THGF_GroupDebuffButtonTemplate" id="9">
+     <Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Debuff8" relativePoint="TOPRIGHT"/></Anchors>
+    </Button>
+    <Button name="$parent_Debuff10" inherits="THGF_GroupDebuffButtonTemplate" id="10">
+     <Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Debuff9" relativePoint="TOPRIGHT"/></Anchors>
+    </Button>
+    <Button name="$parent_Debuff11" inherits="THGF_GroupDebuffButtonTemplate" id="11">
+     <Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Debuff10" relativePoint="TOPRIGHT"/></Anchors>
+    </Button>
+    <Button name="$parent_Debuff12" inherits="THGF_GroupDebuffButtonTemplate" id="12">
+     <Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Debuff11" relativePoint="TOPRIGHT"/></Anchors>
+    </Button>
+    <Button name="$parent_Debuff13" inherits="THGF_GroupDebuffButtonTemplate" id="13">
+     <Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Debuff12" relativePoint="TOPRIGHT"/></Anchors>
+    </Button>
+    <Button name="$parent_Debuff14" inherits="THGF_GroupDebuffButtonTemplate" id="14">
+     <Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Debuff13" relativePoint="TOPRIGHT"/></Anchors>
+    </Button>
+    <Button name="$parent_Debuff15" inherits="THGF_GroupDebuffButtonTemplate" id="15">
+     <Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Debuff14" relativePoint="TOPRIGHT"/></Anchors>
+    </Button>
+    <Button name="$parent_Debuff16" inherits="THGF_GroupDebuffButtonTemplate" id="16">
+     <Anchors><Anchor point="TOPLEFT" relativeTo="$parent_Debuff15" relativePoint="TOPRIGHT"/></Anchors>
+    </Button>
+
+   </Frames>
+   <Scripts>
+    <OnClick>
+     THGF_OnClick(arg1);
+    </OnClick>
+    <OnMouseUp>
+     THGF_MouseUpHandler(this:GetID());
+    </OnMouseUp>
+    <OnMouseDown>
+     THGF_MouseDownHandler(this:GetID());
+    </OnMouseDown>
+    <OnEnter>
+     THGF_SetTooltip(this:GetID());
+    </OnEnter>
+    <OnLeave>
+     THGF_Tooltip:Hide();
+     --GameTooltip:Hide();
+    </OnLeave>
+    <OnHide>
+     THGF_HideHandler(this:GetID());
+    </OnHide>
+    <OnLoad>
+     local mn = this:GetName();
+     local pi = this:GetID();
+     local x;
+     for x=1,16 do
+        getglobal(mn.."_Buff"..x).unit = "party"..pi;
+        getglobal(mn.."_Debuff"..x).unit = "party"..pi;
+     end
+    </OnLoad>
+   </Scripts>
+  </Button>
+
+  <Button name="THGF_PartyMember0" inherits="THGF_PartyMemberTemplate" id="0">
+   <Anchors>
+    <Anchor point="TOPLEFT" relativeTo="UIParent" relativePoint="TOPLEFT">
+     <Offset><AbsDimension x="0" y="-200"/></Offset>
+    </Anchor>
+   </Anchors>
+  </Button>
+  <Button name="THGF_PartyMember1" inherits="THGF_PartyMemberTemplate" id="1">
+   <Anchors>
+    <Anchor point="TOPLEFT" relativeTo="THGF_PartyMember0" relativePoint="BOTTOMLEFT">
+     <Offset><AbsDimension x="0" y="-10"/></Offset>
+    </Anchor>
+   </Anchors>
+  </Button>
+  <Button name="THGF_PartyMember2" inherits="THGF_PartyMemberTemplate" id="2">
+   <Anchors>
+    <Anchor point="TOPLEFT" relativeTo="THGF_PartyMember1" relativePoint="BOTTOMLEFT">
+     <Offset><AbsDimension x="0" y="-10"/></Offset>
+    </Anchor>
+   </Anchors>
+  </Button>
+  <Button name="THGF_PartyMember3" inherits="THGF_PartyMemberTemplate" id="3">
+   <Anchors>
+    <Anchor point="TOPLEFT" relativeTo="THGF_PartyMember2" relativePoint="BOTTOMLEFT">
+     <Offset><AbsDimension x="0" y="-10"/></Offset>
+    </Anchor>
+   </Anchors>
+  </Button>
+  <Button name="THGF_PartyMember4" inherits="THGF_PartyMemberTemplate" id="4">
+   <Anchors>
+    <Anchor point="TOPLEFT" relativeTo="THGF_PartyMember3" relativePoint="BOTTOMLEFT">
+     <Offset><AbsDimension x="0" y="-10"/></Offset>
+    </Anchor>
+   </Anchors>
+  </Button>
+
+</Ui>
