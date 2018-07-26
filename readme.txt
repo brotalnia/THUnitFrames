@@ -17,3 +17,7 @@ Contact
 =======
 Questions, problems, suggestions? Visit www.tempora-heroica.com, or
 contact Seven on the Earthen Ring server.
+
+Screenshot
+==========
+https://imgur.com/a/Fs1r2
